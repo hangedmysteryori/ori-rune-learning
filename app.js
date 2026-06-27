@@ -7,6 +7,68 @@ const SERVICE_LINKS = {
   course: 'https://hangedmysteryori.my1shop.com/520if4'
 };
 
+const FAQ_ITEMS = [
+  {
+    question: '盧恩與塔羅有什麼差異？',
+    answer: '塔羅像是在看一段故事怎麼發展；盧恩像是在看你現在卡在哪裡，以及該用什麼力量面對。'
+  },
+  {
+    question: '完全新手也可以學盧恩嗎？',
+    answer: '可以。從零開始也沒問題，會從 24 枚符文、基本意思和解讀方式一步步學起。'
+  },
+  {
+    question: '占卜結果是絕對的嗎？',
+    answer: '不是。占卜不是直接宣判結果，而是幫你看清現在的狀態，以及接下來可以怎麼做。'
+  },
+  {
+    question: '我什麼時候可以用盧恩占卜？',
+    answer: '當你在感情、工作或人生選擇上想不清楚、卡住，或一直反覆想同一件事時，就可以用盧恩幫自己整理狀態，找到下一步方向。'
+  },
+  {
+    question: '如何預約占卜？',
+    answer: '可以透過網站上的聯絡方式私訊預約，告訴我想問的問題和方便的時間即可。'
+  },
+  {
+    question: '如何報名課程？',
+    answer: '可以先到課程頁看內容和費用，確認有興趣後，再透過聯絡方式私訊報名。'
+  }
+];
+
+const READING_FAQ_ITEMS = [
+  {
+    question: '占卜結果是絕對的嗎？',
+    answer: '不是。占卜結果提供的是當下狀態、能量與方向參考，不是絕對不變的命運判決。它能幫助你看清楚問題，但最後的選擇與行動仍然回到你自己身上。'
+  },
+  {
+    question: '可以短時間內重複問同一題嗎？',
+    answer: '不建議。同一個問題不建議在短時間內反覆占卜，除非現實狀況已經有明顯變化。反覆詢問通常不是為了理解問題，而是想得到讓自己安心的答案。'
+  },
+  {
+    question: '哪些問題不適合占卜？',
+    answer: '生死、疾病診斷、懷孕與醫療判斷、法律訴訟、投資明牌、考試中獎等保證型問題，都不適合用占卜處理。占卜也不適合用來窺探他人隱私，或要求操控他人意志。'
+  },
+  {
+    question: '文字占卜多久會收到回覆？',
+    answer: '文字單題占卜會在確認收款後開始計時，並於 24 小時內提供文字回覆。'
+  },
+  {
+    question: '語音占卜如何安排？',
+    answer: '語音占卜會在確認付款後安排時間，以線上語音方式進行。適合想即時聽取解讀、補充背景與快速釐清問題的人。'
+  },
+  {
+    question: '現場面對面占卜如何預約？',
+    answer: '現場面對面占卜目前服務地區限雙北地區，費用為 1200 元／小時。預約時需預付 50% 費用作為預約保留，剩餘款項可於占卜當日支付。'
+  },
+  {
+    question: '占卜可以替代醫療、法律或心理諮詢嗎？',
+    answer: '不可以。盧恩可以提供方向與自我理解的參考，但不能代替專業醫療、法律、心理治療、投資或其他專業建議。若問題涉及高風險決策，請務必尋求對應領域的專業協助。'
+  },
+  {
+    question: '如果我不知道問題該怎麼問怎麼辦？',
+    answer: '你可以先簡單描述目前的狀況，我會協助你整理成適合盧恩解讀的問題。好的問題會讓解讀更清楚，也更容易帶出能行動的方向。'
+  }
+];
+
 const esc = (value = '') => String(value)
   .replaceAll('&', '&amp;').replaceAll('<', '&lt;')
   .replaceAll('>', '&gt;').replaceAll('"', '&quot;');
@@ -20,8 +82,43 @@ function nextStep(text, label, href) {
   return '<div class="next-step"><span>下一步</span><p>' + text + '</p>' + (href ? button(label, href) : '') + '</div>';
 }
 
-function serviceCard(title, body, label, href, primary = false) {
-  return '<article class="content-card service-choice"><span class="eyebrow">Ori Service</span><h3>' + title + '</h3><p>' + body + '</p><div class="button-row">' + button(label, href, primary) + '</div></article>';
+function serviceCard(title, body, label, href, primary = false, secondaryLabel = '', secondaryHref = '') {
+  return '<article class="content-card service-choice"><span class="eyebrow">Ori Service</span><h3>' + title + '</h3><p>' + body + '</p><div class="button-row">' +
+    button(label, href, primary) + (secondaryLabel ? button(secondaryLabel, secondaryHref) : '') + '</div></article>';
+}
+
+function accordion(itemsData, idPrefix, openFirst = true) {
+  const items = itemsData.map((item, index) => {
+    const open = openFirst && index === 0;
+    const buttonId = idPrefix + '-button-' + index;
+    const panelId = idPrefix + '-panel-' + index;
+    return [
+      '<article class="faq-item', open ? ' open' : '', '">',
+      '<h3><button class="faq-question" id="', buttonId, '" type="button" aria-expanded="', open ? 'true' : 'false', '" aria-controls="', panelId, '">',
+      '<span>Q', index + 1, '：', esc(item.question), '</span><span class="faq-icon" aria-hidden="true">＋</span></button></h3>',
+      '<div class="faq-answer" id="', panelId, '" role="region" aria-labelledby="', buttonId, '"', open ? '' : ' hidden', '><p>', esc(item.answer), '</p></div>',
+      '</article>'
+    ].join('');
+  }).join('');
+  return items;
+}
+
+function faqAccordion() {
+  return [
+    '<section class="section faq-section"><div class="wrap">',
+    '<div class="section-head"><div><span class="eyebrow">FAQ</span><h2>常見問題 FAQ</h2></div>',
+    '<p>第一次接觸盧恩符文，可能會有許多疑問。這裡整理了初學者最常問的問題，幫助你更清楚理解盧恩、占卜與課程的差異。</p></div>',
+    '<div class="faq-list">', accordion(FAQ_ITEMS, 'home-faq'), '</div></div></section>'
+  ].join('');
+}
+
+function readingFaqAccordion() {
+  return [
+    '<section class="section faq-section"><div class="wrap">',
+    '<div class="section-head"><div><span class="eyebrow">Before You Book</span><h2>常見問題與注意事項</h2></div>',
+    '<p>預約前先確認服務範圍與限制，讓占卜回到清楚、誠實而有行動感的位置。</p></div>',
+    '<div class="faq-list">', accordion(READING_FAQ_ITEMS, 'reading-faq', false), '</div></div></section>'
+  ].join('');
 }
 
 function setMeta({ title, description, ogTitle, ogDescription }) {
@@ -58,11 +155,12 @@ function homePage() {
     '<div class="button-row">', button('新手從這裡開始', '#/start-here', true), '</div></div></div></section>',
     '<section class="section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">Begin the Journey</span><h2>從第一組符文開始</h2></div>', button('查看完整總覽', '#/runes'), '</div>',
     '<div class="learn-grid">', featured, '</div></div></section>',
+    faqAccordion(),
     '<section class="section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">A Reading with Ori</span><h2>你想被解讀，還是想自己學會？</h2></div>',
     '<p>如果你想更深入理解感情、關係、選擇與生命轉化，可以選擇一對一占卜，也可以從課程建立自己的解讀系統。</p></div>',
     '<div class="service-grid">',
-    serviceCard('我想被解讀', '適合正在面對感情困惑、關係不確定、人生選擇，想透過盧恩看見目前狀態與下一步的人。', '預約盧恩占卜', SERVICE_LINKS.booking, true),
-    serviceCard('我想自己學會', '適合想從零建立符文語感，學會自己理解 24 枚盧恩，並應用在自我探索與日常覺察的人。', '了解盧恩課程', SERVICE_LINKS.course),
+    serviceCard('我想被解讀', '適合正在面對感情困惑、關係不確定、人生選擇，想透過盧恩看見目前狀態與下一步的人。', '預約盧恩占卜', SERVICE_LINKS.booking, true, '先看占卜須知', '#/rune-reading'),
+    serviceCard('我想自己學會', '適合想從零建立符文語感，學會自己理解 24 枚盧恩，並應用在自我探索與日常覺察的人。', '前往 1shop 報名', SERVICE_LINKS.course, false, '了解教學課程', '#/courses'),
     '</div></div></section>'
   ].join('');
 }
@@ -139,7 +237,7 @@ function startHerePage() {
 
     '<section class="section"><div class="wrap"><div class="cta"><span class="eyebrow">Continue the Path</span><h2>從理解開始，讓符文回到生活裡</h2>',
     '<p class="lead">盧恩不是為你宣判命運，而是陪你讀懂命運正在留下的訊息。當你準備好了，可以繼續看 24 枚符文、抽取今日符文，或預約 Ori 的占卜與課程。</p>',
-    '<div class="button-row">', button('查看 24 枚符文', '#/runes', true), button('抽取今日符文', '#/daily'), button('預約盧恩占卜／了解課程', '#/about'), '</div></div></div></section>'
+    '<div class="button-row">', button('查看 24 枚符文', '#/runes', true), button('抽取今日符文', '#/daily'), button('查看占卜須知', '#/rune-reading'), button('了解教學課程', '#/courses'), '</div></div></div></section>'
   ].join('');
 }
 
@@ -251,11 +349,100 @@ function aboutPage() {
     '<p>我是盧恩符文占卜師與教學者，以盧恩、塔羅與神秘學系統作為工具，陪伴人們理解感情、關係、選擇與生命中的轉化時刻。</p>',
     '<p>對我來說，占卜不是單純預測結果，而是一種看見結構的方式。我特別擅長處理感情中的分離、冷淡、不確定關係、自我價值與情緒焦慮課題。</p>',
     '<p>希望你在這裡不只是記住符文含義，而是慢慢學會：如何透過符文，看見自己生命中的秩序。</p></div></div></section>',
-    '<section class="section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">Services</span><h2>盧恩占卜與教學服務</h2></div>',
-    '<p>盧恩不是替你做決定，而是幫助你看見決定背後的力量。你可以選擇被引導，也可以選擇學會自己閱讀符文。</p></div><div class="service-grid">',
-    serviceCard('我想被解讀', '適合正在面對感情困惑、關係不確定、人生選擇，或想透過盧恩看懂自己內在模式的人。', '預約盧恩占卜', SERVICE_LINKS.booking, true),
-    serviceCard('我想自己學會', '適合想從零開始、建立自己的解讀系統，並將盧恩應用於自我探索、關係理解與生活指引的人。', '了解盧恩課程', SERVICE_LINKS.course),
-    '</div><p class="muted" id="contact-note">點擊按鈕即可前往 Ori 官方 LINE 預約，或至 1shop 查看盧恩課程。</p></div></section>'
+    '<section class="section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">Explore</span><h2>依照你的需要繼續</h2></div>',
+    '<p>占卜服務與教學課程已分開整理，你可以先了解內容，再決定適合自己的方向。</p></div><div class="service-grid">',
+    serviceCard('占卜須知', '了解文字、語音與現場占卜的方案、價格、流程、適合對象與預約前注意事項。', '查看占卜須知', '#/rune-reading', true),
+    serviceCard('教學課程', '認識 Ori 的盧恩教學方向，再前往 1shop 查看目前開放中的課程與報名資訊。', '了解教學課程', '#/courses'),
+    '</div></div></section>'
+  ].join('');
+}
+
+function readingPlanCard(name, price, format, suitable, timing, note) {
+  return [
+    '<article class="content-card reading-plan-card"><span class="eyebrow">Rune Reading</span><h3>', name, '</h3>',
+    '<p class="plan-price">', price, '</p>',
+    '<dl><div><dt>形式</dt><dd>', format, '</dd></div><div><dt>適合對象</dt><dd>', suitable, '</dd></div>',
+    '<div><dt>時間／回覆</dt><dd>', timing, '</dd></div><div><dt>備註</dt><dd>', note, '</dd></div></dl></article>'
+  ].join('');
+}
+
+function readingStep(number, title, body) {
+  return '<article class="reading-step"><span>Step ' + number + '</span><h3>' + title + '</h3><p>' + body + '</p></article>';
+}
+
+function runeReadingPage() {
+  return [
+    '<section class="reading-hero"><div class="wrap"><div class="reading-hero-copy"><span class="eyebrow">Rune Reading with Ori</span>',
+    '<h1>預約盧恩占卜</h1><p class="reading-tagline">在混亂裡，看見問題真正的形狀</p>',
+    '<div class="reading-hero-text"><p>有些問題，不是沒有答案。<br>而是你已經在同一個念頭裡繞了太久，開始分不清自己真正害怕的是什麼、想要的是什麼，又該往哪裡走。</p>',
+    '<p>盧恩符文占卜不是替你決定命運，也不是給你一個絕對的預言。它更像是一面古老的鏡子，幫助你看見當下事件背後的力量、阻礙、課題與可能的方向。</p>',
+    '<p>適合正在面對感情不確定、關係冷淡拉扯、自我混亂，或人生選擇前需要整理方向的人。</p></div>',
+    '<div class="button-row">', button('立即預約盧恩占卜', SERVICE_LINKS.booking, true), button('先抽取今日符文', '#/daily'), '</div>',
+    '</div></div></section>',
+
+    '<section class="section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">Service Plans</span><h2>選擇適合你的占卜方式</h2></div>',
+    '<p>不同的問題，需要不同的承接方式。你可以依照自己的狀態、問題複雜度，以及想要收到回覆的形式，選擇最適合你的盧恩占卜方案。</p></div>',
+    '<div class="service-table-wrap"><table class="service-table"><caption class="sr-only">盧恩占卜服務方案與價格比較</caption><thead><tr><th scope="col">方案</th><th scope="col">費用</th><th scope="col">形式</th><th scope="col">適合對象</th><th scope="col">時間／回覆</th><th scope="col">備註</th></tr></thead><tbody>',
+    '<tr><th scope="row">文字單題占卜</th><td><strong>400 元／單題</strong></td><td>文字回覆</td><td>想保留紀錄、慢慢閱讀與消化的人</td><td>確認收款後開始計時，24 小時內提供回覆</td><td>適合單一明確問題</td></tr>',
+    '<tr><th scope="row">語音單題占卜</th><td><strong>400 元／15 分鐘</strong></td><td>線上語音</td><td>想即時互動、快速釐清問題的人</td><td>確認付款後安排時間</td><td>適合需要補充背景與即時整理的人</td></tr>',
+    '<tr><th scope="row">現場面對面占卜</th><td><strong>1200 元／小時</strong></td><td>現場占卜</td><td>問題較複雜、想深度整理狀態的人</td><td>依預約時間進行</td><td>限雙北地區，需預付 50% 費用作為預約保留</td></tr>',
+    '</tbody></table></div>',
+    '<div class="reading-plan-mobile">',
+    readingPlanCard('文字單題占卜', '400 元／單題', '文字回覆', '想保留紀錄、慢慢閱讀與消化的人', '確認收款後開始計時，24 小時內提供回覆', '適合單一明確問題'),
+    readingPlanCard('語音單題占卜', '400 元／15 分鐘', '線上語音', '想即時互動、快速釐清問題的人', '確認付款後安排時間', '適合需要補充背景與即時整理的人'),
+    readingPlanCard('現場面對面占卜', '1200 元／小時', '現場占卜', '問題較複雜、想深度整理狀態的人', '依預約時間進行', '限雙北地區，需預付 50% 費用作為預約保留'),
+    '</div>',
+    '<div class="quote-box plan-note"><p>如果你的問題很明確，建議選擇文字單題占卜。如果你希望即時互動，可以選擇語音占卜。如果問題較複雜，或需要完整一小時慢慢整理，會更適合現場面對面占卜。</p>',
+    '<p>若你不確定該選哪一種，也可以先簡單描述狀況，我會協助你整理問題，並確認適合的方案。</p></div></div></section>',
+
+    '<section class="section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">Choose Your Way</span><h2>如何選擇方案</h2></div>',
+    '<p>先從你希望如何接收與整理訊息開始選擇。</p></div><div class="start-card-grid aett-grid">',
+    startInfoCard('想保留紀錄', '適合選擇文字單題占卜。你可以慢慢閱讀解讀內容，日後也能回頭整理自己的狀態。'),
+    startInfoCard('想即時互動', '適合選擇語音單題占卜。過程中可以補充背景，也能更快速釐清問題。'),
+    startInfoCard('想深度整理', '適合選擇現場面對面占卜。適合問題較複雜，或希望在一小時內完整梳理狀態的人。'),
+    '</div></div></section>',
+
+    '<section class="section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">Is This for You</span><h2>預約前，先確認你的需要</h2></div>',
+    '<p>占卜最有價值的時刻，是你願意看見訊息，也願意回到現實中採取行動。</p></div><div class="fit-grid">',
+    '<article class="content-card fit-card suitable"><h3>適合你，如果你：</h3><ul><li>正在感情或關係中感到混亂</li><li>面對冷淡、曖昧、不確定關係而焦慮</li><li>想理解一段關係真正的狀態與課題</li><li>需要在重要選擇前整理自己的方向</li><li>想透過盧恩看見自己目前的內在狀態</li><li>不只是想知道結果，也願意理解自己能怎麼做</li></ul></article>',
+    '<article class="content-card fit-card unsuitable"><h3>不適合你，如果你：</h3><ul><li>只想要一個保證答案</li><li>希望占卜替你控制他人</li><li>無法接受與期待不同的訊息</li><li>想用占卜取代現實中的溝通與行動</li><li>短時間內反覆問同一件事，只為了讓自己安心</li></ul></article>',
+    '</div></div></section>',
+
+    '<section class="section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">How It Works</span><h2>占卜流程</h2></div>',
+    '<p>從提出問題到收到解讀，共有四個清楚步驟。</p></div><div class="reading-steps">',
+    readingStep('1', '送出問題與背景', '請簡單描述你想詢問的主題、目前狀況與最困惑的地方。'),
+    readingStep('2', '確認問題與方案', '我會協助確認問題是否適合占卜，並確認適合文字、語音或現場占卜。'),
+    readingStep('3', '完成付款與預約', '文字占卜確認收款後開始計時；語音占卜確認付款後安排時間；現場占卜需預付 50%。'),
+    readingStep('4', '收到盧恩解讀', '我會依照你的問題抽取符文，整理目前狀態、核心課題與可行的行動建議。'),
+    '</div></div></section>',
+
+    readingFaqAccordion(),
+
+    '<section class="section"><div class="wrap reading-philosophy"><span class="eyebrow">My Practice</span><h2>我的占卜理念</h2>',
+    '<p>我相信，占卜不是把人生交給命運決定。真正有價值的占卜，是讓你更清楚地回到自己身上。</p>',
+    '<p>盧恩不會替你做選擇，也不會要求你盲目相信某個結果。它會告訴你：你現在站在哪裡、正在被什麼力量影響、哪裡需要調整，以及你可以如何更有意識地面對眼前的問題。</p>',
+    '<p>我不會用恐嚇式語言製造焦慮，也不會把任何結果說成無法改變的命定。我更重視的是讓你理解問題的結構，協助你從混亂、等待、焦慮或執著之中，找回比較清醒的位置。</p>',
+    '<div class="quote-box"><strong>盧恩不替你逃避現實，而是幫助你更誠實地看見現實。</strong></div></div></section>',
+
+    '<section class="section"><div class="wrap"><div class="cta reading-cta" id="booking"><span class="eyebrow">Book a Reading</span><h2>如果你正在混亂裡，先讓問題被看見</h2>',
+    '<p class="lead">你不需要立刻知道所有答案。<br>有時候，真正重要的是先看清楚：自己究竟站在哪裡。</p>',
+    '<div class="button-row">', button('立即預約盧恩占卜', SERVICE_LINKS.booking, true), button('先抽取今日符文', '#/daily'), '</div></div></div></section>'
+  ].join('');
+}
+
+function coursesPage() {
+  return [
+    '<section class="page-hero"><div class="wrap"><span class="eyebrow">Learn with Ori</span><h1>盧恩教學課程</h1>',
+    '<p class="lead">從 24 枚符文的核心語言開始，逐步建立可以帶回生活、自我探索與關係理解中的解讀能力。</p></div></section>',
+    '<section class="section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">Learning Direction</span><h2>不是背答案，而是學會閱讀符文</h2></div>',
+    '<p>課程適合想從零開始，建立符文基礎、理解正位與陰影狀態，並練習把象徵連結到真實生活的人。</p></div><div class="start-card-grid aett-grid">',
+    startInfoCard('建立基礎', '認識 Elder Futhark 24 枚符文的名稱、符號、核心含義與三組 Aett 架構。'),
+    startInfoCard('練習解讀', '從關鍵字走向完整理解，學習辨認符文在不同問題與狀態中的表現。'),
+    startInfoCard('回到生活', '將符文應用於日常覺察、關係理解與自我探索，而不是只停留在記憶答案。'),
+    '</div></div></section>',
+    '<section class="section"><div class="wrap"><div class="cta"><span class="eyebrow">Course Information</span><h2>查看目前開放中的課程</h2>',
+    '<p class="lead">課程內容、費用與報名方式以 Ori 的 1shop 最新公告為準。</p>',
+    '<div class="button-row">', button('前往 1shop 查看課程', SERVICE_LINKS.course, true), button('先從新手入門開始', '#/start-here'), '</div></div></div></section>'
   ].join('');
 }
 
@@ -305,10 +492,28 @@ function render() {
   else if (path === '/about') {
     app.innerHTML = aboutPage();
     setMeta({
-      title: '關於 Ori｜盧恩占卜與課程',
-      description: '認識世界樹觀測者 Ori，了解盧恩占卜與盧恩符文教學服務。',
-      ogTitle: '關於 Ori｜盧恩占卜與課程',
-      ogDescription: 'Ori 提供感情、關係、自我探索與生命轉化相關的盧恩占卜與課程。'
+      title: '關於 Ori｜世界樹觀測者',
+      description: '認識世界樹觀測者 Ori，以及她如何透過盧恩符文陪伴感情、關係、自我探索與生命轉化。',
+      ogTitle: '關於 Ori｜世界樹觀測者',
+      ogDescription: '認識盧恩符文占卜師與教學者 Ori，以及她看待占卜與符文學習的方式。'
+    });
+  }
+  else if (path === '/rune-reading') {
+    app.innerHTML = runeReadingPage();
+    setMeta({
+      title: '預約盧恩占卜｜感情關係與人生選擇指引｜世界樹觀測者 Ori',
+      description: '提供文字、語音與現場盧恩占卜服務，協助你整理感情關係、自我狀態與人生選擇中的核心課題。文字占卜 400 元／單題，語音占卜 400 元／15 分鐘，現場占卜 1200 元／小時。',
+      ogTitle: '預約盧恩占卜｜世界樹觀測者 Ori',
+      ogDescription: '在混亂裡，看見問題真正的形狀。透過 24 枚盧恩符文，整理感情、關係與人生選擇中的狀態、課題與行動方向。'
+    });
+  }
+  else if (path === '/courses') {
+    app.innerHTML = coursesPage();
+    setMeta({
+      title: '盧恩教學課程｜世界樹觀測者 Ori',
+      description: '從零開始認識 Elder Futhark 24 枚盧恩符文，建立符文基礎、解讀能力與日常覺察練習。',
+      ogTitle: '盧恩教學課程｜世界樹觀測者 Ori',
+      ogDescription: '從符文基礎到生活應用，逐步建立自己的盧恩解讀語言。'
     });
   }
   else if (parts[0] === 'rune' && parts[1]) {
@@ -347,6 +552,15 @@ function render() {
 
 document.addEventListener('click', event => {
   if (event.target.closest('#draw-rune')) drawRune();
+  const faqButton = event.target.closest('.faq-question');
+  if (faqButton) {
+    const item = faqButton.closest('.faq-item');
+    const panel = document.querySelector('#' + faqButton.getAttribute('aria-controls'));
+    const expanded = faqButton.getAttribute('aria-expanded') === 'true';
+    faqButton.setAttribute('aria-expanded', String(!expanded));
+    item.classList.toggle('open', !expanded);
+    if (panel) panel.hidden = expanded;
+  }
 });
 menuButton.addEventListener('click', () => {
   const open = nav.classList.toggle('open');
