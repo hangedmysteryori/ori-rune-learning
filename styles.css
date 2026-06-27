@@ -97,6 +97,13 @@ h3 { font-size: 1.18rem; }
 .filter-bar { display:flex; justify-content:space-between; align-items:center; gap:18px; margin-bottom:28px; }
 .filter-bar p { color:var(--muted); }
 .rune-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; padding-bottom:110px; }
+.rune-groups { padding-bottom:110px; }
+.rune-group .rune-grid { padding-bottom:0; }
+.rune-group + .rune-group { margin-top:clamp(72px,9vw,110px); padding-top:clamp(62px,8vw,92px); border-top:1px solid rgba(201,167,99,.2); }
+.rune-group-head { display:flex; align-items:end; justify-content:space-between; gap:36px; margin-bottom:30px; }
+.rune-group-head h2 { margin:8px 0 0; font-size:clamp(1.75rem,3vw,2.55rem); }
+.rune-group-head h2 span { color:var(--gold-light); }
+.rune-group-head p { max-width:520px; margin:0; color:var(--muted); }
 .rune-card { min-height:300px; padding:26px; display:flex; flex-direction:column; position:relative; overflow:hidden; background:linear-gradient(160deg,rgba(27,30,22,.95),rgba(12,14,10,.95)); border:1px solid rgba(201,167,99,.24); transition:.3s; }
 .rune-card:hover { transform:translateY(-5px); border-color:var(--gold); box-shadow:0 18px 40px rgba(0,0,0,.35); }
 .rune-card .number { color:#77766d; font:500 .68rem var(--display); letter-spacing:.14em; }
@@ -115,6 +122,10 @@ h3 { font-size: 1.18rem; }
 .detail-grid { grid-template-columns:1fr 1fr; padding-block:70px 110px; }
 .content-card h3 { color:var(--gold-light); margin-top:0; }
 .content-card.feature { grid-column:1/-1; }
+.reflection-list { margin:0; padding-left:1.25rem; color:#bcb7aa; }
+.reflection-list li + li { margin-top:12px; }
+.reflection-card { box-shadow:inset 3px 0 0 rgba(201,167,99,.52); }
+.action-card { background:linear-gradient(145deg,rgba(38,39,27,.94),rgba(16,18,13,.98)); box-shadow:inset 3px 0 0 rgba(232,207,145,.62); }
 .back-link { color:var(--gold); font-size:.85rem; }
 .daily-stage { min-height:calc(100vh - 76px); display:grid; place-items:center; padding:75px 0; text-align:center; }
 .draw-shell { width:min(760px,calc(100% - 40px)); }
@@ -275,9 +286,13 @@ footer small { font-size:.7rem; letter-spacing:.1em; }
   .section-head { display:block; }
   .button-row .btn { width:100%; }
   .rune-grid { grid-template-columns:1fr; gap:12px; padding-bottom:70px; }
+  .rune-group .rune-grid { padding-bottom:0; }
   .rune-card { min-height:245px; }
   .rune-card .rune-symbol { font-size:4rem; margin:10px 0 2px; }
   .filter-bar { display:block; }
+  .rune-group-head { display:block; }
+  .rune-group-head p { margin-top:14px; }
+  .rune-group + .rune-group { margin-top:62px; padding-top:52px; }
   .detail-top { grid-template-columns:1fr; text-align:center; }
   .giant-rune { width:180px; margin:auto; font-size:7rem; }
   .detail-grid, .service-grid { grid-template-columns:1fr; }

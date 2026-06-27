@@ -253,15 +253,56 @@ function learningStep(step, title, body) {
   return '<article class="learning-step"><span>' + step + '</span><div><h3>' + title + '</h3><p>' + body + '</p></div></article>';
 }
 
-function runesPage() {
-  const cards = RUNES.map(r => [
+function runeCard(r) {
+  return [
     '<a class="rune-card" href="#/rune/', r.slug, '">',
     '<span class="number">RUNE ', String(r.id).padStart(2, '0'), '</span>',
     '<span class="rune-symbol">', r.symbol, '</span>',
     '<h3>', esc(r.name), '</h3><span class="cn">', esc(r.chineseName), '</span>',
     '<div class="keywords">', r.keywords.map(k => '<span class="chip">' + esc(k) + '</span>').join(''), '</div>',
     '<p>', esc(r.summary), '</p><span class="arrow">↗</span></a>'
-  ].join('')).join('');
+  ].join('');
+}
+
+function runeGroup(aett) {
+  const cards = RUNES.slice(aett.start, aett.end).map(runeCard).join('');
+  return [
+    '<section class="rune-group" aria-labelledby="', aett.id, '">',
+    '<div class="rune-group-head"><div><span class="eyebrow">', aett.english, '</span>',
+    '<h2 id="', aett.id, '">', aett.english, '<span>｜', aett.chinese, '</span></h2></div>',
+    '<p>', aett.description, '</p></div>',
+    '<div class="rune-grid">', cards, '</div></section>'
+  ].join('');
+}
+
+function runesPage() {
+  const aetts = [
+    {
+      id: 'freyr-aett',
+      english: "Freyr's Aett",
+      chinese: '弗雷群組',
+      description: '第一組 8 枚符文，關注資源、本能、力量、交流、行動、交換與喜悅。',
+      start: 0,
+      end: 8
+    },
+    {
+      id: 'heimdall-aett',
+      english: "Heimdall's Aett",
+      chinese: '海姆達爾群組',
+      description: '第二組 8 枚符文，帶領學習者面對衝擊、限制、週期、轉化、保護與重新找回光。',
+      start: 8,
+      end: 16
+    },
+    {
+      id: 'tyr-aett',
+      english: "Tyr's Aett",
+      chinese: '提爾群組',
+      description: '第三組 8 枚符文，關注信念、孕育、合作、人性、直覺、突破、傳承與歸屬。',
+      start: 16,
+      end: 24
+    }
+  ];
+  const groups = aetts.map(runeGroup).join('');
   return [
     '<section class="page-hero"><div class="wrap"><span class="eyebrow">The Elder Futhark</span>',
     '<h1>24 枚盧恩符文</h1><p class="lead">每一枚符文，都是一種生命力量。先從符號與關鍵字開始，讓理解慢慢長出自己的根。</p></div></section>',
@@ -271,8 +312,27 @@ function runesPage() {
     "<article class=\"content-card aett-card\"><span class=\"eyebrow\">Heimdall's Aett</span><h3>海姆達爾群組</h3><p>衝擊、限制、停滯、週期、轉化、命運、保護與光。像是穿越考驗後的成熟。</p></article>",
     "<article class=\"content-card aett-card\"><span class=\"eyebrow\">Tyr's Aett</span><h3>提爾群組</h3><p>信念、孕育、合作、人性、潛意識、突破與歸屬。像是走向整合與命運承擔。</p></article>",
     '</div></div></section>',
-    '<section><div class="wrap"><div class="filter-bar"><p>依傳統順序排列 · 三組 Aett</p><span class="eyebrow">24 Symbols</span></div>',
-    '<div class="rune-grid">', cards, '</div></div></section>'
+    '<section><div class="wrap"><div class="filter-bar"><p>依傳統順序排列 · 每組 8 枚符文</p><span class="eyebrow">3 Aetts · 24 Symbols</span></div>',
+    '<div class="rune-groups">', groups, '</div></div></section>'
+  ].join('');
+}
+
+function reflectionCard(r) {
+  const keyword = esc(r.keywords[0] || r.name);
+  return [
+    '<article class="content-card reflection-card"><h3>自我提問</h3><ul class="reflection-list">',
+    '<li>這枚符文讓我想到目前生活中的哪一個情境？</li>',
+    '<li>當「', keyword, '」的力量出現時，我正在順流使用它，還是落入失衡？</li>',
+    '<li>如果誠實面對這枚符文的提醒，我現在最需要調整的是什麼？</li>',
+    '</ul></article>'
+  ].join('');
+}
+
+function todayActionCard(r) {
+  const keyword = esc(r.keywords[0] || r.name);
+  return [
+    '<article class="content-card action-card"><h3>今日行動建議</h3>',
+    '<p>今天留意一個與「', keyword, '」有關的時刻。先不急著判斷好壞，做出一個比平常更有意識的小選擇，晚上再用一句話記下行動後的變化。</p></article>'
   ].join('');
 }
 
@@ -295,6 +355,8 @@ function detailPage(slug) {
     contentCard('逆位／陰影解讀', r.shadow),
     contentCard('感情中的含義', r.love),
     contentCard('給學習者的建議', r.advice),
+    reflectionCard(r),
+    todayActionCard(r),
     '</div></section>',
     '<section class="section compact-section"><div class="wrap"><div class="rune-detail-nav" role="navigation" aria-label="符文詳情導覽">',
     '<a class="detail-nav-card" href="#/rune/', prev.slug, '"><span>上一枚</span><b>', esc(prev.name), '</b><small>', esc(prev.chineseName), '</small></a>',
