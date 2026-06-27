@@ -156,6 +156,11 @@ function homePage() {
     '<section class="section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">Begin the Journey</span><h2>從第一組符文開始</h2></div>', button('查看完整總覽', '#/runes'), '</div>',
     '<div class="learn-grid">', featured, '</div></div></section>',
     faqAccordion(),
+    '<section class="section home-about"><div class="wrap about-intro"><div class="portrait-mark compact-portrait"><img src="assets/rune-logo.jpg" alt="世界樹觀測者 Ori Logo"></div><div>',
+    '<span class="eyebrow">About Ori</span><h2>讓神秘訊息，成為能行動的指引</h2>',
+    '<p>Ori 是盧恩符文占卜師與教學者，以 24 枚 Elder Futhark 盧恩符文作為象徵系統，協助人們理解感情、關係、選擇與生命中的轉化時刻。</p>',
+    '<p>他的解讀不依賴通靈，也不提供恐嚇式預言，而是透過符文看見問題結構，將神秘訊息轉化成清楚、可理解、能行動的指引。</p>',
+    '<div class="button-row">', button('了解 Ori 的占卜方法', '#/about', true), button('預約盧恩占卜', SERVICE_LINKS.booking), button('抽取今日符文', '#/daily'), '</div></div></div></section>',
     '<section class="section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">A Reading with Ori</span><h2>你想被解讀，還是想自己學會？</h2></div>',
     '<p>如果你想更深入理解感情、關係、選擇與生命轉化，可以選擇一對一占卜，也可以從課程建立自己的解讀系統。</p></div>',
     '<div class="service-grid">',
@@ -403,20 +408,59 @@ function drawRune() {
   ].join('');
 }
 
+function aboutMethodCard(number, title, body) {
+  return '<article class="content-card about-method-card"><span class="method-number">' + number + '</span><h3>' + title + '</h3>' + body + '</article>';
+}
+
 function aboutPage() {
   return [
-    '<section class="page-hero"><div class="wrap"><span class="eyebrow">The Observer of Yggdrasil</span><h1>關於 Ori</h1>',
-    '<p class="lead">以符文作為語言，陪你看見關係、選擇與生命轉化背後的結構。</p></div></section>',
+    '<section class="about-hero"><div class="wrap about-hero-grid"><div><span class="eyebrow">The Observer of Yggdrasil</span><h1>關於 Ori</h1>',
+    '<p class="reading-tagline">世界樹觀測者</p><p class="lead">以符文作為鏡子，陪你在關係、選擇與命運的訊息裡，找回清醒與力量。</p>',
+    '<div class="button-row"><a class="btn primary" href="#/about" data-scroll-target="about-method">了解我的占卜方法</a>', button('預約盧恩占卜', SERVICE_LINKS.booking), '</div></div>',
+    '<div class="about-hero-mark"><img src="assets/rune-logo.jpg" alt="世界樹觀測者 Ori Logo"></div></div></section>',
+
     '<section class="section"><div class="wrap about-intro"><div class="portrait-mark"><img src="assets/rune-logo.jpg" alt="世界樹觀測者 Ori Logo"></div><div>',
-    '<span class="eyebrow">Meet Ori</span><h2>我是 Ori，<br>世界樹觀測者。</h2>',
-    '<p>我是盧恩符文占卜師與教學者，以盧恩、塔羅與神秘學系統作為工具，陪伴人們理解感情、關係、選擇與生命中的轉化時刻。</p>',
-    '<p>對我來說，占卜不是單純預測結果，而是一種看見結構的方式。我特別擅長處理感情中的分離、冷淡、不確定關係、自我價值與情緒焦慮課題。</p>',
-    '<p>希望你在這裡不只是記住符文含義，而是慢慢學會：如何透過符文，看見自己生命中的秩序。</p></div></div></section>',
-    '<section class="section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">Explore</span><h2>依照你的需要繼續</h2></div>',
-    '<p>占卜服務與教學課程已分開整理，你可以先了解內容，再決定適合自己的方向。</p></div><div class="service-grid">',
-    serviceCard('占卜須知', '了解文字、語音與現場占卜的方案、價格、流程、適合對象與預約前注意事項。', '查看占卜須知', '#/rune-reading', true),
-    serviceCard('教學課程', '認識 Ori 的盧恩教學方向，再前往 1shop 查看目前開放中的課程與報名資訊。', '了解教學課程', '#/courses'),
-    '</div></div></section>'
+    '<span class="eyebrow">Meet Ori</span><h2>我是 Ori，盧恩符文占卜師與教學者。</h2>',
+    '<p>我使用盧恩符文、塔羅與神秘學系統作為工具，協助人們理解感情、關係、選擇與生命中的轉化時刻。</p>',
+    '<p>對我來說，占卜不是替人決定命運，也不是給出一個絕對的預言。它更像是一面鏡子，幫助你看見自己現在站在哪裡、正在被什麼影響，以及接下來可以如何更清醒地行動。</p>',
+    '<p>「世界樹觀測者」這個名字，來自我對盧恩的理解。世界樹連結不同的世界，也象徵人生命中的關係、選擇、過去與未來。而觀測者不是操控命運的人，而是願意停下來，看見事件背後結構的人。</p>',
+    '<p>我希望這裡能成為一個安靜但清醒的入口。讓你不只是得到答案，而是透過符文，看見自己生命中的秩序。</p></div></div></section>',
+
+    '<section class="section"><div class="wrap about-story-grid"><div><span class="eyebrow">My Journey</span><h2>我的經歷</h2>',
+    '<div class="quote-box">我並不是一開始就帶著「我要成為占卜師」的目標走向盧恩。</div></div><div class="prose-stack">',
+    '<p>在接觸神秘學之前，我也曾在感情、關係與人生選擇中感到混亂。有些時候，真正讓人痛苦的不是事情本身，而是腦中反覆出現的念頭：對方到底怎麼想？我該繼續，還是放下？我是不是又在同樣的模式裡消耗自己？</p>',
+    '<p>後來，我開始接觸塔羅、盧恩、神秘學與象徵系統。我發現，占卜真正有力量的地方，不是告訴我「未來一定會怎樣」，而是幫助我看清楚：我正在經歷什麼、我為什麼會被困住，以及我可以從哪裡重新拿回自己的力量。</p>',
+    '<p>盧恩尤其吸引我。它不像塔羅那樣充滿畫面，而是更像一種古老、簡潔、直接的語言。每一枚符文都像是一個生命課題：資源、力量、界線、等待、轉化、保護、關係、傳承。</p>',
+    '<p>也因為這樣，我開始建立自己的盧恩解讀方式。不依賴通靈，也不把占卜說成神秘不可理解的力量。我更重視的是：如何把符文的象徵，轉化成清楚、白話、可以帶回生活裡行動的指引。</p>',
+    '</div></div></section>',
+
+    '<section class="section about-philosophy"><div class="wrap"><div class="section-head"><div><span class="eyebrow">My Philosophy</span><h2>我的占卜理念</h2></div>',
+    '<p>我相信，占卜不是把人生交給命運決定。真正有價值的占卜，是讓你更清楚地回到自己身上。</p></div>',
+    '<div class="about-philosophy-grid"><div class="content-card feature"><h3>盧恩不會替你做選擇，它會幫助你看見：</h3>',
+    '<ul class="about-value-list"><li>現在的狀態是什麼</li><li>問題真正卡住的地方在哪裡</li><li>你正在使用或壓抑哪一股力量</li><li>這段關係或選擇背後的課題是什麼</li><li>接下來可以如何更清醒地行動</li></ul></div>',
+    '<div class="quote-box">我重視的是讓你理解問題的結構。因為當你看懂自己為什麼混亂、為什麼等待、為什麼執著，你就不再只是被情緒推著走。</div></div></div></section>',
+
+    '<section class="section" id="about-method"><div class="wrap"><div class="section-head"><div><span class="eyebrow">Methodology</span><h2>我的方法論</h2></div>',
+    '<p>從問題整理、符文解讀到現實行動，每一步都為了讓訊息更清楚、更能被你使用。</p></div><div class="about-method-grid">',
+    aboutMethodCard('01', '先整理問題，而不是急著給答案',
+      '<p>很多人來占卜時，會問：「他還愛我嗎？」「我們會不會復合？」「我該不該放棄？」</p><p>但這些問題背後，往往還有更深的需求：我是不是還被在乎？這段關係還值得我投入嗎？我現在的等待，是愛，還是焦慮？</p><p>所以在解讀之前，我會先協助你看見問題真正的形狀。問題問得越清楚，符文給出的訊息也會越精準。</p>'),
+    aboutMethodCard('02', '用符文看見狀態、力量與課題',
+      '<p>盧恩不是單純回答「會」或「不會」。它更擅長指出一件事情背後正在運作的力量。</p><ul><li>事件目前的狀態</li><li>關係中的力量流動</li><li>你內在真正的課題</li><li>問題裡失衡的地方</li><li>可以採取的行動方向</li></ul><p>我希望你收到的不是一段模糊的神秘訊息，而是一份能讓你重新理解自己與現實的指引。</p>'),
+    aboutMethodCard('03', '不依牌面方向判讀，而是看見明亮面與陰影面',
+      '<p>在我的盧恩系統中，符文不同於塔羅，不依牌面方向區分含義。每一枚符文都是一股力量。</p><p>當這股力量被清楚、成熟地使用時，會展現出正向／明亮面；當它被壓抑、過度使用或失衡時，則會展現為負向／陰影面。</p><p>陰影不代表壞事。它是一種提醒，指出哪裡需要被看見、理解與調整。</p>'),
+    aboutMethodCard('04', '把神秘訊息轉化為現實中的行動',
+      '<p>我不希望占卜只是讓你覺得「很準」。我更希望你在看完解讀後，能知道：我現在可以先做什麼？我需要停止什麼消耗？我該如何調整自己的位置？</p><div class="method-closing">占卜的終點不是依賴占卜，而是透過占卜，重新相信自己的判斷力。</div>'),
+    '</div></div></section>',
+
+    '<section class="section"><div class="wrap about-value"><span class="eyebrow">What I Hope to Offer</span><h2>我希望帶給你的</h2>',
+    '<p>如果你正在混亂、等待、不確定，或在一段關係裡反覆失去自己的中心，盧恩可以成為一個讓你重新看見自己的入口。</p>',
+    '<p>你不需要立刻知道所有答案。有時候，真正重要的是先看清楚：</p>',
+    '<div class="about-value-points"><span>自己究竟站在哪裡</span><span>什麼正在影響你</span><span>什麼已經不再適合你</span><span>接下來想成為什麼樣的人</span></div>',
+    '<div class="quote-box"><strong>我是 Ori。我以符文作為鏡子，陪你在關係、選擇與命運的訊息裡，找回清醒與力量。</strong></div></div></section>',
+
+    '<section class="section"><div class="wrap"><div class="cta about-cta"><span class="eyebrow">Continue with Ori</span><h2>從看見自己開始</h2>',
+    '<p class="lead">你可以預約一次盧恩占卜，也可以先從網站的新手指南或每日符文開始。</p>',
+    '<div class="button-row">', button('預約盧恩占卜', SERVICE_LINKS.booking, true), button('前往新手入門', '#/start-here'), button('抽取今日符文', '#/daily'), '</div></div></div></section>'
   ].join('');
 }
 
@@ -555,10 +599,10 @@ function render() {
   else if (path === '/about') {
     app.innerHTML = aboutPage();
     setMeta({
-      title: '關於 Ori｜世界樹觀測者',
-      description: '認識世界樹觀測者 Ori，以及她如何透過盧恩符文陪伴感情、關係、自我探索與生命轉化。',
+      title: '關於 Ori｜世界樹觀測者｜盧恩符文占卜師與教學者',
+      description: 'Ori 是盧恩符文占卜師與教學者，以 24 枚 Elder Futhark 盧恩符文作為象徵系統，協助你理解感情、關係、選擇與生命中的轉化時刻，並將神秘訊息轉化為清楚可行的指引。',
       ogTitle: '關於 Ori｜世界樹觀測者',
-      ogDescription: '認識盧恩符文占卜師與教學者 Ori，以及她看待占卜與符文學習的方式。'
+      ogDescription: '認識世界樹觀測者 Ori 的品牌理念、個人經歷與盧恩占卜方法論。占卜不是替你決定命運，而是幫助你看見問題結構，找回清醒與力量。'
     });
   }
   else if (path === '/rune-reading') {
@@ -615,6 +659,12 @@ function render() {
 
 document.addEventListener('click', event => {
   if (event.target.closest('#draw-rune')) drawRune();
+  const scrollLink = event.target.closest('[data-scroll-target]');
+  if (scrollLink) {
+    event.preventDefault();
+    const target = document.querySelector('#' + scrollLink.getAttribute('data-scroll-target'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
   const faqButton = event.target.closest('.faq-question');
   if (faqButton) {
     const item = faqButton.closest('.faq-item');
