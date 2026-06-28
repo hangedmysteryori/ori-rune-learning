@@ -1,93 +1,129 @@
-# GitHub + Vercel 正式部署指南
+# GitHub + Vercel 部署指南
 
-## 部署結論
+## 部署方式
 
-本專案可以直接部署到 Vercel。repository 根目錄同時就是網站根目錄，入口檔案是根目錄的 **index.html**。
+這是一個純 HTML、CSS、JavaScript 網站。各主要路徑與 24 枚符文詳情皆已有預渲染 HTML，不需要套件安裝、資料庫或 build step。
 
-實際發布所需檔案：
+專案入口為根目錄的 `index.html`。`vercel.json` 將正常網址 rewrite 到對應的預渲染 HTML，因此直接輸入網址或重新整理頁面不會 404。
 
-    index.html
-    styles.css
-    data.js
-    app.js
+## 必要部署檔案
 
-網站是純 HTML、CSS、JavaScript，沒有 package.json、套件安裝或建置程序。
+上傳 GitHub 時請保留：
+
+```text
+index.html
+beginner.html
+runes.html
+daily.html
+about.html
+rune-reading.html
+courses.html
+runes/                  # 24 個詳情 HTML
+assets/rune-logo.jpg
+styles.css
+data.js
+app.js
+vercel.json
+sitemap.xml
+robots.txt
+```
+
+`README.md`、`DEPLOY.md`、`AGENTS.md`、`.gitignore` 與 `.vercelignore` 可保留在 GitHub；它們不是網站執行所需資源。
+
+不需要新增 `package.json`。
+
+## 推送到 GitHub
+
+如果資料夾尚未連接 GitHub：
+
+```powershell
+git init
+git add .
+git commit -m "Migrate site to SEO-friendly routes"
+git branch -M main
+git remote add origin https://github.com/hangedmysteryori/ori-rune-learning.git
+git push -u origin main
+```
+
+如果 repository 已連接：
+
+```powershell
+git add .
+git commit -m "Migrate site to SEO-friendly routes"
+git push
+```
+
+推送前請先確認 `git status`，避免把不相關檔案一起提交。
+
+## 在 Vercel 匯入 GitHub repository
+
+1. 登入 Vercel。
+2. 選擇 **Add New → Project**。
+3. 匯入 `hangedmysteryori/ori-rune-learning`。
+4. 依照下表設定。
+5. 按下 **Deploy**。
 
 ## Vercel 部署設定表
 
-| Vercel 欄位 | 實際設定 |
+| Vercel 欄位 | 應填內容 |
 | --- | --- |
-| Project Name | 自訂，建議 ori-rune-learning |
-| Framework Preset | Other |
-| Root Directory | 使用預設值，不要指定子資料夾 |
+| Project Name | `ori-rune-learning` |
+| Framework Preset | `Other` |
+| Root Directory | 使用預設值 |
 | Build Command | 留空 |
 | Output Directory | 留空或使用預設值 |
 | Install Command | 留空 |
 | Environment Variables | 不需要 |
 
-設定 Build Command 時，選擇 **Other** 後開啟 Override，確認欄位是空白。Output Directory 不需要開啟 Override；本專案沒有 public 資料夾，Vercel 會直接發布 repository 根目錄。
+請不要啟用 Build Command、Output Directory 或 Install Command 的 Override。
 
-## 為什麼不需要 vercel.json
+## `vercel.json` 的用途
 
-網站使用 Hash Router。首頁、總覽與詳情頁的網址分別類似：
+`vercel.json` 必須保留。它將：
 
-    https://your-domain.vercel.app/#/
-    https://your-domain.vercel.app/#/runes
-    https://your-domain.vercel.app/#/rune/fehu
-    https://your-domain.vercel.app/#/daily
+- `/beginner` rewrite 到 `/beginner.html`
+- `/runes` rewrite 到 `/runes.html`
+- `/daily` rewrite 到 `/daily.html`
+- `/about` rewrite 到 `/about.html`
+- `/rune-reading` rewrite 到 `/rune-reading.html`
+- `/courses` rewrite 到 `/courses.html`
+- `/runes/:slug` rewrite 到 `/runes/:slug.html`
 
-井字號後方的路由不會傳送給伺服器。重新整理詳情頁時，Vercel 收到的請求仍然是根目錄 **/**，並回傳 index.html，再由 app.js 顯示正確符文。因此不會出現詳情頁 404，也不需要 rewrite、redirect 或 vercel.json。
-
-## 靜態資源檢查
-
-- index.html 以相對路徑載入 styles.css、data.js 與 app.js。
-- 網站沒有需要額外複製的圖片；背景紋理直接內嵌於 CSS。
-- 24 枚符文內容保存在 data.js，不需要 API 或資料庫。
-- 符文詳情頁由 app.js 根據 Hash 路由與 slug 產生。
-- 每日一符文由瀏覽器端 JavaScript 隨機抽取，不需要伺服器功能。
-- 源雲明體使用官方 GitHub repository 的固定 v2.100 版本；正式站需能連線至 raw.githubusercontent.com。
-
-## 推送到 GitHub
-
-先在 GitHub 建立空白 repository，例如 **ori-rune-learning**，不要勾選自動建立 README、.gitignore 或 License。
-
-在本專案根目錄執行：
-
-    git init
-    git add .
-    git commit -m "Initial production-ready static site"
-    git branch -M main
-    git remote add origin https://github.com/YOUR_ACCOUNT/ori-rune-learning.git
-    git push -u origin main
-
-將 **YOUR_ACCOUNT** 換成你的 GitHub 使用者名稱。若本機已有正常的 Git repository，請先確認 remote，再執行 add、commit 與 push。
-
-## 從 GitHub 匯入 Vercel
-
-1. 登入 Vercel。
-2. 選擇 **Add New → Project**。
-3. 連接 GitHub，選擇剛推送的 repository。
-4. Framework Preset 選擇 **Other**。
-5. Root Directory 保持預設值。
-6. Build Command 開啟 Override，但欄位保持空白。
-7. Output Directory 與 Install Command 保持預設／空白。
-8. 不需要新增 Environment Variables。
-9. 按下 **Deploy**。
-
-## 後續更新
-
-    git add .
-    git commit -m "Update site"
-    git push
-
-Vercel 會在 main 分支更新後自動建立新的 production deployment。
+這些 rewrite 不改變瀏覽器網址，也不影響 CSS、JavaScript、圖片、`sitemap.xml` 或 `robots.txt`。
 
 ## 上線後驗收
 
-1. **/**：首頁標題、導覽、CTA 與字型正常。
-2. **/#/runes**：完整顯示 24 張符文卡片。
-3. **/#/rune/fehu**：顯示核心含義、正向／明亮解讀、負向／陰影解讀、感情與建議。
-4. 在詳情頁按重新整理，確認仍顯示 Fehu 而非 404。
-5. **/#/daily**：可以抽取、再次抽取並進入符文詳情。
-6. **/#/about**：Ori 與服務介紹正常。
-7. 使用手機尺寸確認導覽、卡片與文字沒有水平溢出。
+請直接開啟並重新整理：
+
+1. `https://ori-rune-learning.vercel.app/`
+2. `https://ori-rune-learning.vercel.app/beginner`
+3. `https://ori-rune-learning.vercel.app/runes`
+4. `https://ori-rune-learning.vercel.app/runes/fehu`
+5. `https://ori-rune-learning.vercel.app/daily`
+6. `https://ori-rune-learning.vercel.app/about`
+7. `https://ori-rune-learning.vercel.app/rune-reading`
+8. `https://ori-rune-learning.vercel.app/courses`
+9. `https://ori-rune-learning.vercel.app/sitemap.xml`
+10. `https://ori-rune-learning.vercel.app/robots.txt`
+
+另請確認：
+
+- 24 枚符文卡片與上一枚／下一枚導覽正常。
+- 每日一符文可抽取、再次抽取並進入詳情。
+- 首頁與占卜頁 FAQ 可展開／收合。
+- 手機選單可正常開關。
+- Logo、CSS、JavaScript 與 favicon 沒有 404。
+- 舊網址 `/#/runes`、`/#/rune/fehu` 可自動轉成正常路徑。
+- 瀏覽器主控台沒有錯誤。
+
+## 後續更新
+
+更新網站內容時，需同步更新對應的預渲染 HTML，確保搜尋引擎讀到的內容與 JavaScript 畫面一致。完成後再提交：
+
+```powershell
+git add .
+git commit -m "Update site content"
+git push
+```
+
+Vercel 會在 `main` 更新後自動建立 production deployment。

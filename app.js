@@ -6,6 +6,7 @@ const SERVICE_LINKS = {
   booking: 'https://lin.ee/yxkj3pE',
   course: 'https://hangedmysteryori.my1shop.com/520if4'
 };
+const SITE_ORIGIN = 'https://ori-rune-learning.vercel.app';
 
 const FAQ_ITEMS = [
   {
@@ -121,19 +122,24 @@ function readingFaqAccordion() {
   ].join('');
 }
 
-function setMeta({ title, description, ogTitle, ogDescription }) {
+function setMeta({ title, description, ogTitle, ogDescription, canonicalPath = '/' }) {
   document.title = title || '世界樹觀測者 Ori｜盧恩符文學習';
   const metaDescription = document.querySelector('meta[name="description"]');
   const ogTitleMeta = document.querySelector('meta[property="og:title"]');
   const ogDescriptionMeta = document.querySelector('meta[property="og:description"]');
+  const ogUrlMeta = document.querySelector('meta[property="og:url"]');
+  const canonicalLink = document.querySelector('link[rel="canonical"]');
+  const canonicalUrl = SITE_ORIGIN + (canonicalPath === '/' ? '/' : canonicalPath);
   if (metaDescription && description) metaDescription.setAttribute('content', description);
-  if (ogTitleMeta && ogTitle) ogTitleMeta.setAttribute('content', ogTitle);
-  if (ogDescriptionMeta && ogDescription) ogDescriptionMeta.setAttribute('content', ogDescription);
+  if (ogTitleMeta) ogTitleMeta.setAttribute('content', ogTitle || title);
+  if (ogDescriptionMeta) ogDescriptionMeta.setAttribute('content', ogDescription || description);
+  if (ogUrlMeta) ogUrlMeta.setAttribute('content', canonicalUrl);
+  if (canonicalLink) canonicalLink.setAttribute('href', canonicalUrl);
 }
 
 function homePage() {
   const featured = RUNES.slice(0, 4).map(r => (
-    '<a class="rune-teaser" href="#/rune/' + r.slug + '">' +
+    '<a class="rune-teaser" href="/runes/' + r.slug + '">' +
       '<span class="symbol">' + r.symbol + '</span><span><b>' + r.name + '</b><br><small class="muted">' + r.chineseName + ' · ' + r.keywords[0] + '</small></span>' +
     '</a>'
   )).join('');
@@ -143,7 +149,7 @@ function homePage() {
     '<h1>盧恩符文初學者，<br>從這裡開始學</h1>',
     '<p class="lead">這是一座為初學者設計的盧恩符文學習網站。你可以認識 Elder Futhark 24 枚符文、理解每一枚符文的核心含義，並用每日一符文練習自我覺察。</p>',
     '<div class="hero-points"><span>24 枚符文總覽</span><span>單一符文詳解</span><span>每日抽符文練習</span></div>',
-    '<div class="button-row">', button('新手從這裡開始', '#/start-here', true), button('抽取今日符文', '#/daily'), '</div>',
+    '<div class="button-row">', button('新手從這裡開始', '/beginner', true), button('抽取今日符文', '/daily'), '</div>',
     '</div></div></section>',
     '<section class="section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">About Runes</span><h2>盧恩，是照見當下的鏡子</h2></div>',
     '<p>盧恩不只是古老的文字，也是一套理解世界與自我的象徵系統。每一枚符文都像一道門，帶你看見處境、力量，以及生命正在要求你學會的課題。</p></div>',
@@ -152,20 +158,20 @@ function homePage() {
     '<article class="learn-card"><h3>帶回你的生活</h3><p>連結感情與日常經驗，問自己：這枚符文正在提醒我什麼？</p></article></div></div></section>',
     '<section class="section"><div class="wrap"><div class="cta soft-cta"><span class="eyebrow">Start Here</span><h2>第一次接觸盧恩？</h2>',
     '<p class="lead">從新手入門開始，先理解符文的基本概念、學習順序與每日練習方式。</p>',
-    '<div class="button-row">', button('新手從這裡開始', '#/start-here', true), '</div></div></div></section>',
-    '<section class="section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">Begin the Journey</span><h2>從第一組符文開始</h2></div>', button('查看完整總覽', '#/runes'), '</div>',
+    '<div class="button-row">', button('新手從這裡開始', '/beginner', true), '</div></div></div></section>',
+    '<section class="section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">Begin the Journey</span><h2>從第一組符文開始</h2></div>', button('查看完整總覽', '/runes'), '</div>',
     '<div class="learn-grid">', featured, '</div></div></section>',
     faqAccordion(),
-    '<section class="section home-about"><div class="wrap about-intro"><div class="portrait-mark compact-portrait"><img src="assets/rune-logo.jpg" alt="世界樹觀測者 Ori Logo"></div><div>',
+    '<section class="section home-about"><div class="wrap about-intro"><div class="portrait-mark compact-portrait"><img src="/assets/rune-logo.jpg" alt="世界樹觀測者 Ori Logo"></div><div>',
     '<span class="eyebrow">About Ori</span><h2>讓神秘訊息，成為能行動的指引</h2>',
     '<p>Ori 是盧恩符文占卜師與教學者，以 24 枚 Elder Futhark 盧恩符文作為象徵系統，協助人們理解感情、關係、選擇與生命中的轉化時刻。</p>',
     '<p>他的解讀不依賴通靈，也不提供恐嚇式預言，而是透過符文看見問題結構，將神秘訊息轉化成清楚、可理解、能行動的指引。</p>',
-    '<div class="button-row">', button('了解 Ori 的占卜方法', '#/about', true), button('預約盧恩占卜', SERVICE_LINKS.booking), button('抽取今日符文', '#/daily'), '</div></div></div></section>',
+    '<div class="button-row">', button('了解 Ori 的占卜方法', '/about', true), button('預約盧恩占卜', SERVICE_LINKS.booking), button('抽取今日符文', '/daily'), '</div></div></div></section>',
     '<section class="section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">A Reading with Ori</span><h2>你想被解讀，還是想自己學會？</h2></div>',
     '<p>如果你想更深入理解感情、關係、選擇與生命轉化，可以選擇一對一占卜，也可以從課程建立自己的解讀系統。</p></div>',
     '<div class="service-grid">',
-    serviceCard('我想被解讀', '適合正在面對感情困惑、關係不確定、人生選擇，想透過盧恩看見目前狀態與下一步的人。', '預約盧恩占卜', SERVICE_LINKS.booking, true, '先看占卜須知', '#/rune-reading'),
-    serviceCard('我想自己學會', '適合想從零建立符文語感，學會自己理解 24 枚盧恩，並應用在自我探索與日常覺察的人。', '前往 1shop 報名', SERVICE_LINKS.course, false, '了解教學課程', '#/courses'),
+    serviceCard('我想被解讀', '適合正在面對感情困惑、關係不確定、人生選擇，想透過盧恩看見目前狀態與下一步的人。', '預約盧恩占卜', SERVICE_LINKS.booking, true, '先看占卜須知', '/rune-reading'),
+    serviceCard('我想自己學會', '適合想從零建立符文語感，學會自己理解 24 枚盧恩，並應用在自我探索與日常覺察的人。', '前往 1shop 報名', SERVICE_LINKS.course, false, '了解教學課程', '/courses'),
     '</div></div></section>'
   ].join('');
 }
@@ -177,8 +183,8 @@ function startHerePage() {
     '<h1>新手從這裡開始</h1>',
     '<p class="lead">第一次接觸盧恩符文，也能一步步理解這套古老的象徵語言。</p>',
     '<p>你不需要一開始就背下 24 枚符文。先理解盧恩是什麼、可以怎麼使用，再透過每日練習，把符文帶回自己的生活裡觀察。</p>',
-    '<div class="button-row">', button('開始認識 24 枚符文', '#/runes', true), button('抽取今日符文', '#/daily'), '</div></div>',
-    '<div class="start-logo-panel"><img src="assets/rune-logo.jpg" alt="世界樹觀測者 Ori Logo"></div></div></section>',
+    '<div class="button-row">', button('開始認識 24 枚符文', '/runes', true), button('抽取今日符文', '/daily'), '</div></div>',
+    '<div class="start-logo-panel"><img src="/assets/rune-logo.jpg" alt="世界樹觀測者 Ori Logo"></div></div></section>',
     '<section class="section compact-section"><div class="wrap"><div class="learning-map">',
     '<article><span>01</span><b>盧恩是什麼</b><small>先建立基本概念</small></article>',
     '<article><span>02</span><b>可以用來做什麼</b><small>理解使用情境</small></article>',
@@ -214,7 +220,7 @@ function startHerePage() {
     startInfoCard('不是操控他人的工具', '盧恩不能保證某個人會回來、會愛你、會選擇你，也不應該被用來窺探或侵犯他人的意志。'),
     startInfoCard('不是逃避行動的藉口', '如果問題需要溝通、界線或努力，符文可以幫助你看見課題，但真正穿越課題的人仍然是你自己。'),
     startInfoCard('不是迷信，而是象徵閱讀', '學習盧恩不是要你放棄理性，而是讓直覺與理性一起工作，把混亂整理成可理解的結構。'),
-    '</div>', nextStep('有了基本認知後，可以開始看 24 枚符文如何排列成一張生命地圖。', '認識 24 枚架構', '#/runes'), '</div></section>',
+    '</div>', nextStep('有了基本認知後，可以開始看 24 枚符文如何排列成一張生命地圖。', '認識 24 枚架構', '/runes'), '</div></section>',
 
     '<section class="section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">Elder Futhark</span><h2>24 枚符文的基本架構</h2></div>',
     '<p>現代最常被用於盧恩占卜與學習的系統，是 Elder Futhark，也就是古弗薩克符文。它由 24 枚符文組成，可以分成三組，每組 8 枚，稱為 Aett。</p></div>',
@@ -223,12 +229,12 @@ function startHerePage() {
     aettCard("Heimdall's Aett", '海姆達爾群組', 'Hagalaz、Nauthiz、Isa、Jera、Eihwaz、Perthro、Algiz、Sowilo', '從衝擊到轉化', '這一組進入深層考驗，談混亂、限制、停滯、週期、死亡與轉化、命運、保護，以及重新找回光。核心課題是：當我無法控制一切時，如何穿越考驗？'),
     aettCard("Tyr's Aett", '提爾群組', 'Tiwaz、Berkana、Ehwaz、Mannaz、Laguz、Ingwaz、Dagaz、Othala', '從關係到命運整合', '這一組關注成熟的生命整合，談信念、孕育、合作、人性、潛意識、突破，以及傳承與歸屬。核心課題是：我如何找到真正的歸屬，並承擔自己的命運？'),
     '</div><div class="quote-box map-note">24 枚符文可以被看作一張生命地圖：第一組學會建立力量與連結，第二組學會面對限制與轉化，第三組學會整合關係與命運。</div>',
-    nextStep('知道三組 Aett 後，最好的練習是每天抽一枚，觀察它如何映照你的生活。', '前往每日練習', '#/daily'), '</div></section>',
+    nextStep('知道三組 Aett 後，最好的練習是每天抽一枚，觀察它如何映照你的生活。', '前往每日練習', '/daily'), '</div></section>',
 
     '<section class="section"><div class="wrap reading-block"><span class="eyebrow">Daily Practice</span><h2>如何抽取每日符文</h2>',
     '<p>每日一符文是一種簡單的練習。你可以在一天開始前，或感到混亂時，先停下來深呼吸，把注意力放回自己身上。</p>',
     '<p>不需要問得很完美。你可以問：「我今天需要看見什麼？」、「這件事可能帶來什麼結果？」或「我現在最需要覺察的是什麼？」抽到符文後，先不要急著判斷好壞，而是觀察它如何出現在你的情緒、關係與選擇裡。</p>',
-    '<div class="button-row">', button('前往每日一符文', '#/daily', true), '</div>',
+    '<div class="button-row">', button('前往每日一符文', '/daily', true), '</div>',
     nextStep('開始練習後，可以接著往下看推薦學習順序，逐步建立自己的符文語感。'), '</div></section>',
 
     '<section class="section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">Learning Path</span><h2>推薦學習順序</h2></div>',
@@ -243,7 +249,7 @@ function startHerePage() {
 
     '<section class="section"><div class="wrap"><div class="cta"><span class="eyebrow">Continue the Path</span><h2>從理解開始，讓符文回到生活裡</h2>',
     '<p class="lead">盧恩不是為你宣判命運，而是陪你讀懂命運正在留下的訊息。當你準備好了，可以繼續看 24 枚符文、抽取今日符文，或預約 Ori 的占卜與課程。</p>',
-    '<div class="button-row">', button('查看 24 枚符文', '#/runes', true), button('抽取今日符文', '#/daily'), button('查看占卜須知', '#/rune-reading'), button('了解教學課程', '#/courses'), '</div></div></div></section>'
+    '<div class="button-row">', button('查看 24 枚符文', '/runes', true), button('抽取今日符文', '/daily'), button('查看占卜須知', '/rune-reading'), button('了解教學課程', '/courses'), '</div></div></div></section>'
   ].join('');
 }
 
@@ -261,7 +267,7 @@ function learningStep(step, title, body) {
 
 function runeCard(r) {
   return [
-    '<a class="rune-card" href="#/rune/', r.slug, '">',
+    '<a class="rune-card" href="/runes/', r.slug, '">',
     '<span class="number">RUNE ', String(r.id).padStart(2, '0'), '</span>',
     '<span class="rune-symbol">', r.symbol, '</span>',
     '<h3>', esc(r.name), '</h3><span class="cn">', esc(r.chineseName), '</span>',
@@ -312,7 +318,7 @@ function runesPage() {
   return [
     '<section class="page-hero"><div class="wrap"><span class="eyebrow">The Elder Futhark</span>',
     '<h1>24 枚盧恩符文</h1><p class="lead">每一枚符文，都是一種生命力量。先從符號與關鍵字開始，讓理解慢慢長出自己的根。</p></div></section>',
-    '<section class="section compact-section"><div class="wrap"><div class="quote-box overview-tip"><span class="eyebrow">Beginner Tip</span><p>如果你是第一次學盧恩，不需要一次背完 24 枚。先看符號、中文名稱與核心關鍵字，再挑一枚有感覺的符文進入詳情頁閱讀。</p><div class="button-row">', button('不知道從哪裡開始？看新手入門', '#/start-here'), '</div></div>',
+    '<section class="section compact-section"><div class="wrap"><div class="quote-box overview-tip"><span class="eyebrow">Beginner Tip</span><p>如果你是第一次學盧恩，不需要一次背完 24 枚。先看符號、中文名稱與核心關鍵字，再挑一枚有感覺的符文進入詳情頁閱讀。</p><div class="button-row">', button('不知道從哪裡開始？看新手入門', '/beginner'), '</div></div>',
     '<div class="aett-grid overview-aett">',
     "<article class=\"content-card aett-card\"><span class=\"eyebrow\">Freyr's Aett</span><h3>弗雷群組</h3><p>資源、本能、力量、語言、行動、交換與喜悅。像是生命剛開始學會與世界連結。</p></article>",
     "<article class=\"content-card aett-card\"><span class=\"eyebrow\">Heimdall's Aett</span><h3>海姆達爾群組</h3><p>衝擊、限制、停滯、週期、轉化、命運、保護與光。像是穿越考驗後的成熟。</p></article>",
@@ -349,7 +355,7 @@ function detailPage(slug) {
   const prev = RUNES[(index - 1 + RUNES.length) % RUNES.length];
   const next = RUNES[(index + 1) % RUNES.length];
   return [
-    '<section class="detail-hero"><div class="wrap"><a class="back-link" href="#/runes">← 返回 24 枚符文</a>',
+    '<section class="detail-hero"><div class="wrap"><a class="back-link" href="/runes">← 返回 24 枚符文</a>',
     '<div class="detail-top"><div class="giant-rune">', r.symbol, '</div><div>',
     '<span class="eyebrow">Rune ', String(r.id).padStart(2, '0'), '</span>',
     '<h1 class="detail-title">', esc(r.name), '</h1><div class="detail-subtitle">', esc(r.chineseName), '</div>',
@@ -365,9 +371,9 @@ function detailPage(slug) {
     todayActionCard(r),
     '</div></section>',
     '<section class="section compact-section"><div class="wrap"><div class="rune-detail-nav" role="navigation" aria-label="符文詳情導覽">',
-    '<a class="detail-nav-card" href="#/rune/', prev.slug, '"><span>上一枚</span><b>', esc(prev.name), '</b><small>', esc(prev.chineseName), '</small></a>',
-    '<a class="detail-nav-card overview" href="#/runes"><span>回到總覽</span><b>24 枚符文</b><small>依 Elder Futhark 順序瀏覽</small></a>',
-    '<a class="detail-nav-card" href="#/rune/', next.slug, '"><span>下一枚</span><b>', esc(next.name), '</b><small>', esc(next.chineseName), '</small></a>',
+    '<a class="detail-nav-card" href="/runes/', prev.slug, '"><span>上一枚</span><b>', esc(prev.name), '</b><small>', esc(prev.chineseName), '</small></a>',
+    '<a class="detail-nav-card overview" href="/runes"><span>回到總覽</span><b>24 枚符文</b><small>依 Elder Futhark 順序瀏覽</small></a>',
+    '<a class="detail-nav-card" href="/runes/', next.slug, '"><span>下一枚</span><b>', esc(next.name), '</b><small>', esc(next.chineseName), '</small></a>',
     '</div></div></section>'
   ].join('');
 }
@@ -404,7 +410,7 @@ function drawRune() {
     '<li>今天我可以在哪裡多一點清醒與選擇？</li>',
     '</ul></div>',
     '<div class="button-row" style="justify-content:center"><button class="btn primary" id="draw-rune">再抽一枚</button>',
-    '<a class="btn" href="#/rune/', rune.slug, '">深入認識這枚符文</a></div>'
+    '<a class="btn" href="/runes/', rune.slug, '">深入認識這枚符文</a></div>'
   ].join('');
 }
 
@@ -416,10 +422,10 @@ function aboutPage() {
   return [
     '<section class="about-hero"><div class="wrap about-hero-grid"><div><span class="eyebrow">The Observer of Yggdrasil</span><h1>關於 Ori</h1>',
     '<p class="reading-tagline">世界樹觀測者</p><p class="lead">以符文作為鏡子，陪你在關係、選擇與命運的訊息裡，找回清醒與力量。</p>',
-    '<div class="button-row"><a class="btn primary" href="#/about" data-scroll-target="about-method">了解我的占卜方法</a>', button('預約盧恩占卜', SERVICE_LINKS.booking), '</div></div>',
-    '<div class="about-hero-mark"><img src="assets/rune-logo.jpg" alt="世界樹觀測者 Ori Logo"></div></div></section>',
+    '<div class="button-row"><a class="btn primary" href="/about" data-scroll-target="about-method">了解我的占卜方法</a>', button('預約盧恩占卜', SERVICE_LINKS.booking), '</div></div>',
+    '<div class="about-hero-mark"><img src="/assets/rune-logo.jpg" alt="世界樹觀測者 Ori Logo"></div></div></section>',
 
-    '<section class="section"><div class="wrap about-intro"><div class="portrait-mark"><img src="assets/rune-logo.jpg" alt="世界樹觀測者 Ori Logo"></div><div>',
+    '<section class="section"><div class="wrap about-intro"><div class="portrait-mark"><img src="/assets/rune-logo.jpg" alt="世界樹觀測者 Ori Logo"></div><div>',
     '<span class="eyebrow">Meet Ori</span><h2>我是 Ori，盧恩符文占卜師與教學者。</h2>',
     '<p>我使用盧恩符文、塔羅與神秘學系統作為工具，協助人們理解感情、關係、選擇與生命中的轉化時刻。</p>',
     '<p>對我來說，占卜不是替人決定命運，也不是給出一個絕對的預言。它更像是一面鏡子，幫助你看見自己現在站在哪裡、正在被什麼影響，以及接下來可以如何更清醒地行動。</p>',
@@ -460,7 +466,7 @@ function aboutPage() {
 
     '<section class="section"><div class="wrap"><div class="cta about-cta"><span class="eyebrow">Continue with Ori</span><h2>從看見自己開始</h2>',
     '<p class="lead">你可以預約一次盧恩占卜，也可以先從網站的新手指南或每日符文開始。</p>',
-    '<div class="button-row">', button('預約盧恩占卜', SERVICE_LINKS.booking, true), button('前往新手入門', '#/start-here'), button('抽取今日符文', '#/daily'), '</div></div></div></section>'
+    '<div class="button-row">', button('預約盧恩占卜', SERVICE_LINKS.booking, true), button('前往新手入門', '/beginner'), button('抽取今日符文', '/daily'), '</div></div></div></section>'
   ].join('');
 }
 
@@ -484,7 +490,7 @@ function runeReadingPage() {
     '<div class="reading-hero-text"><p>有些問題，不是沒有答案。<br>而是你已經在同一個念頭裡繞了太久，開始分不清自己真正害怕的是什麼、想要的是什麼，又該往哪裡走。</p>',
     '<p>盧恩符文占卜不是替你決定命運，也不是給你一個絕對的預言。它更像是一面古老的鏡子，幫助你看見當下事件背後的力量、阻礙、課題與可能的方向。</p>',
     '<p>適合正在面對感情不確定、關係冷淡拉扯、自我混亂，或人生選擇前需要整理方向的人。</p></div>',
-    '<div class="button-row">', button('立即預約盧恩占卜', SERVICE_LINKS.booking, true), button('先抽取今日符文', '#/daily'), '</div>',
+    '<div class="button-row">', button('立即預約盧恩占卜', SERVICE_LINKS.booking, true), button('先抽取今日符文', '/daily'), '</div>',
     '</div></div></section>',
 
     '<section class="section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">Service Plans</span><h2>選擇適合你的占卜方式</h2></div>',
@@ -533,7 +539,7 @@ function runeReadingPage() {
 
     '<section class="section"><div class="wrap"><div class="cta reading-cta" id="booking"><span class="eyebrow">Book a Reading</span><h2>如果你正在混亂裡，先讓問題被看見</h2>',
     '<p class="lead">你不需要立刻知道所有答案。<br>有時候，真正重要的是先看清楚：自己究竟站在哪裡。</p>',
-    '<div class="button-row">', button('立即預約盧恩占卜', SERVICE_LINKS.booking, true), button('先抽取今日符文', '#/daily'), '</div></div></div></section>'
+    '<div class="button-row">', button('立即預約盧恩占卜', SERVICE_LINKS.booking, true), button('先抽取今日符文', '/daily'), '</div></div></div></section>'
   ].join('');
 }
 
@@ -549,60 +555,80 @@ function coursesPage() {
     '</div></div></section>',
     '<section class="section"><div class="wrap"><div class="cta"><span class="eyebrow">Course Information</span><h2>查看目前開放中的課程</h2>',
     '<p class="lead">課程內容、費用與報名方式以 Ori 的 1shop 最新公告為準。</p>',
-    '<div class="button-row">', button('前往 1shop 查看課程', SERVICE_LINKS.course, true), button('先從新手入門開始', '#/start-here'), '</div></div></div></section>'
+    '<div class="button-row">', button('前往 1shop 查看課程', SERVICE_LINKS.course, true), button('先從新手入門開始', '/beginner'), '</div></div></div></section>'
   ].join('');
 }
 
 function notFound() {
-  return '<section class="not-found"><div><span class="eyebrow">The path is hidden</span><h1>找不到這條道路</h1>' + button('回到首頁', '#/', true) + '</div></section>';
+  return '<section class="not-found"><div><span class="eyebrow">The path is hidden</span><h1>找不到這條道路</h1>' + button('回到首頁', '/', true) + '</div></section>';
+}
+
+function normalizePath(pathname) {
+  let path = decodeURIComponent(pathname || '/');
+  path = path.replace(/\/index\.html$/, '/').replace(/\.html$/, '');
+  if (!path.startsWith('/')) path = '/' + path;
+  if (path.length > 1) path = path.replace(/\/+$/, '');
+  return path || '/';
+}
+
+function legacyHashTarget() {
+  if (!location.hash.startsWith('#/')) return '';
+  let target = location.hash.slice(1) || '/';
+  if (target === '/start-here') target = '/beginner';
+  if (target.startsWith('/rune/')) target = '/runes/' + target.slice('/rune/'.length);
+  return normalizePath(target);
+}
+
+function migrateLegacyHash() {
+  const target = legacyHashTarget();
+  if (!target) return false;
+  history.replaceState({}, '', target);
+  return true;
 }
 
 function render() {
-  const path = location.hash.slice(1) || '/';
+  const path = normalizePath(location.pathname);
   const parts = path.split('/').filter(Boolean);
   if (path === '/') {
     app.innerHTML = homePage();
     setMeta({
       title: '盧恩符文學習｜Elder Futhark 24 枚符文｜世界樹觀測者 Ori',
-      description: '世界樹觀測者 Ori 的盧恩符文初學者學習網站。從零認識 Elder Futhark 24 枚符文、每日一符文練習、感情與自我覺察應用。',
-      ogTitle: '盧恩符文學習｜世界樹觀測者 Ori',
-      ogDescription: '從零開始認識 Elder Futhark 24 枚盧恩符文，理解符文象徵、占卜用途、每日練習與自我覺察方式。'
+      description: '認識 Elder Futhark 24 枚盧恩符文，學習符文含義、每日符文抽取、感情與人生選擇中的象徵指引。由世界樹觀測者 Ori 建立的盧恩學習入口。',
+      canonicalPath: '/'
     });
   }
-  else if (path === '/start-here') {
+  else if (path === '/beginner') {
     app.innerHTML = startHerePage();
     setMeta({
       title: '新手入門｜盧恩符文學習指南｜世界樹觀測者 Ori',
       description: '第一次接觸盧恩符文也能輕鬆開始。認識盧恩是什麼、可以用來做什麼、24 枚符文架構、每日符文抽取方式與推薦學習順序。',
-      ogTitle: '新手入門｜盧恩符文學習指南',
-      ogDescription: '從零開始認識 24 枚盧恩符文，理解符文的象徵、占卜用途與日常學習方式。'
+      canonicalPath: '/beginner'
     });
   }
   else if (path === '/runes') {
     app.innerHTML = runesPage();
     setMeta({
-      title: '24 枚盧恩符文｜世界樹觀測者 Ori',
-      description: '瀏覽 Elder Futhark 24 枚盧恩符文總覽，認識每枚符文的符號、名稱、核心關鍵字、一句話總結與三組 Aett 架構。',
-      ogTitle: '24 枚盧恩符文',
-      ogDescription: '認識 Elder Futhark 24 枚盧恩符文的象徵、含義、三組 Aett 與新手學習順序。'
+      title: '24 枚盧恩符文含義｜Elder Futhark 符文總覽｜世界樹觀測者 Ori',
+      description: "完整認識 Elder Futhark 24 枚盧恩符文，依 Freyr's Aett、Heimdall's Aett、Tyr's Aett 三組群組學習符文名稱、象徵、明亮解讀與陰影解讀。",
+      canonicalPath: '/runes'
     });
   }
   else if (path === '/daily') {
     app.innerHTML = dailyPage();
     setMeta({
-      title: '每日一符文｜世界樹觀測者 Ori',
-      description: '抽取今日盧恩符文，協助自己看見當下狀態與需要覺察的課題。',
-      ogTitle: '每日一符文',
-      ogDescription: '每天抽一枚盧恩符文，作為自我覺察與日常觀察的提醒。'
+      title: '每日一符文｜抽取今日盧恩指引｜世界樹觀測者 Ori',
+      description: '為今天抽取一枚盧恩符文，透過符文訊息理解當下狀態、內在課題與今日行動建議。',
+      canonicalPath: '/daily'
     });
   }
   else if (path === '/about') {
     app.innerHTML = aboutPage();
     setMeta({
       title: '關於 Ori｜世界樹觀測者｜盧恩符文占卜師與教學者',
-      description: 'Ori 是盧恩符文占卜師與教學者，以 24 枚 Elder Futhark 盧恩符文作為象徵系統，協助你理解感情、關係、選擇與生命中的轉化時刻，並將神秘訊息轉化為清楚可行的指引。',
+      description: 'Ori 是盧恩符文占卜師與教學者，以 24 枚 Elder Futhark 盧恩符文作為象徵系統，協助你理解感情、關係、選擇與生命中的轉化時刻。',
       ogTitle: '關於 Ori｜世界樹觀測者',
-      ogDescription: '認識世界樹觀測者 Ori 的品牌理念、個人經歷與盧恩占卜方法論。占卜不是替你決定命運，而是幫助你看見問題結構，找回清醒與力量。'
+      ogDescription: '認識世界樹觀測者 Ori 的品牌理念、個人經歷與盧恩占卜方法論。占卜不是替你決定命運，而是幫助你看見問題結構，找回清醒與力量。',
+      canonicalPath: '/about'
     });
   }
   else if (path === '/rune-reading') {
@@ -611,26 +637,25 @@ function render() {
       title: '預約盧恩占卜｜感情關係與人生選擇指引｜世界樹觀測者 Ori',
       description: '提供文字、語音與現場盧恩占卜服務，協助你整理感情關係、自我狀態與人生選擇中的核心課題。文字占卜 400 元／單題，語音占卜 400 元／15 分鐘，現場占卜 1200 元／小時。',
       ogTitle: '預約盧恩占卜｜世界樹觀測者 Ori',
-      ogDescription: '在混亂裡，看見問題真正的形狀。透過 24 枚盧恩符文，整理感情、關係與人生選擇中的狀態、課題與行動方向。'
+      ogDescription: '在混亂裡，看見問題真正的形狀。透過 24 枚盧恩符文，整理感情、關係與人生選擇中的狀態、課題與行動方向。',
+      canonicalPath: '/rune-reading'
     });
   }
   else if (path === '/courses') {
     app.innerHTML = coursesPage();
     setMeta({
-      title: '盧恩教學課程｜世界樹觀測者 Ori',
-      description: '從零開始認識 Elder Futhark 24 枚盧恩符文，建立符文基礎、解讀能力與日常覺察練習。',
-      ogTitle: '盧恩教學課程｜世界樹觀測者 Ori',
-      ogDescription: '從符文基礎到生活應用，逐步建立自己的盧恩解讀語言。'
+      title: '盧恩符文教學課程｜從 24 枚符文建立解讀系統｜世界樹觀測者 Ori',
+      description: '盧恩符文教學課程，從 Elder Futhark 24 枚符文出發，建立清楚、可理解、可應用的符文解讀系統，適合初學者與想深入學習占卜的人。',
+      canonicalPath: '/courses'
     });
   }
-  else if (parts[0] === 'rune' && parts[1]) {
+  else if (parts[0] === 'runes' && parts[1]) {
     app.innerHTML = detailPage(parts[1]);
     const rune = RUNES.find(item => item.slug === parts[1]);
     setMeta({
-      title: rune ? rune.name + '｜盧恩符文詳解｜世界樹觀測者 Ori' : '盧恩符文詳解｜世界樹觀測者 Ori',
-      description: rune ? rune.summary : '閱讀單一盧恩符文的核心含義、明亮面、陰影面與感情解讀。',
-      ogTitle: rune ? rune.name + '｜盧恩符文詳解' : '盧恩符文詳解',
-      ogDescription: rune ? rune.summary : '閱讀單一盧恩符文的核心含義與學習建議。'
+      title: rune ? rune.name + '｜' + rune.chineseName + '｜盧恩符文含義｜世界樹觀測者 Ori' : '盧恩符文含義｜世界樹觀測者 Ori',
+      description: rune ? '認識 ' + rune.name + ' 盧恩符文的核心關鍵字、象徵含義、正向／明亮解讀、負向／陰影解讀、感情中的含義、自我提問與今日行動建議。' : '閱讀單一盧恩符文的核心含義、明亮面、陰影面與感情解讀。',
+      canonicalPath: rune ? '/runes/' + rune.slug : '/runes'
     });
   }
   else {
@@ -639,16 +664,17 @@ function render() {
       title: '找不到頁面｜世界樹觀測者 Ori',
       description: '這條符文路徑不存在，請回到首頁重新開始。',
       ogTitle: '找不到頁面｜世界樹觀測者 Ori',
-      ogDescription: '這條符文路徑不存在，請回到首頁重新開始。'
+      ogDescription: '這條符文路徑不存在，請回到首頁重新開始。',
+      canonicalPath: path
     });
   }
 
   const section = parts[0] || '';
   document.querySelectorAll('nav a').forEach(link => {
     const href = link.getAttribute('href');
-    const active = (path === '/' && href === '#/') ||
-      (section === 'rune' && href === '#/runes') ||
-      (section && href === '#/' + section);
+    const active = (path === '/' && href === '/') ||
+      (section === 'runes' && href === '/runes') ||
+      (section && href === '/' + section);
     link.classList.toggle('active', Boolean(active));
   });
   nav.classList.remove('open');
@@ -664,6 +690,7 @@ document.addEventListener('click', event => {
     event.preventDefault();
     const target = document.querySelector('#' + scrollLink.getAttribute('data-scroll-target'));
     if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return;
   }
   const faqButton = event.target.closest('.faq-question');
   if (faqButton) {
@@ -674,10 +701,26 @@ document.addEventListener('click', event => {
     item.classList.toggle('open', !expanded);
     if (panel) panel.hidden = expanded;
   }
+  const internalLink = event.target.closest('a[href^="/"]');
+  if (internalLink && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey) {
+    const url = new URL(internalLink.href, location.origin);
+    if (url.origin === location.origin) {
+      event.preventDefault();
+      const nextPath = normalizePath(url.pathname);
+      if (nextPath !== normalizePath(location.pathname)) {
+        history.pushState({}, '', nextPath);
+      }
+      render();
+    }
+  }
 });
 menuButton.addEventListener('click', () => {
   const open = nav.classList.toggle('open');
   menuButton.setAttribute('aria-expanded', String(open));
 });
-window.addEventListener('hashchange', render);
+migrateLegacyHash();
+window.addEventListener('popstate', render);
+window.addEventListener('hashchange', () => {
+  if (migrateLegacyHash()) render();
+});
 render();

@@ -1,0 +1,11 @@
+{
+  "rewrites": [
+    { "source": "/beginner", "destination": "/beginner.html" },
+    { "source": "/runes", "destination": "/runes.html" },
+    { "source": "/daily", "destination": "/daily.html" },
+    { "source": "/about", "destination": "/about.html" },
+    { "source": "/rune-reading", "destination": "/rune-reading.html" },
+    { "source": "/courses", "destination": "/courses.html" },
+    { "source": "/runes/:slug", "destination": "/runes/:slug.html" }
+  ]
+}
