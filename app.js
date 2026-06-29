@@ -3,9 +3,9 @@ const nav = document.querySelector('nav');
 const menuButton = document.querySelector('.menu-button');
 
 const SERVICE_LINKS = {
-  booking: 'https://lin.ee/yxkj3pE',
-  course: 'https://hangedmysteryori.my1shop.com/520if4'
+  booking: 'https://lin.ee/yxkj3pE'
 };
+const COURSE_LINE_URL = 'https://lin.ee/yxkj3pE';
 const SITE_ORIGIN = 'https://ori-rune-learning.vercel.app';
 
 const FAQ_ITEMS = [
@@ -31,7 +31,7 @@ const FAQ_ITEMS = [
   },
   {
     question: '如何報名課程？',
-    answer: '可以先到課程頁看內容和費用，確認有興趣後，再透過聯絡方式私訊報名。'
+    answer: '可以先到課程頁了解學習方向，再加入官方 LINE 取得完整課綱、開課梯次、費用與報名方式。'
   }
 ];
 
@@ -67,6 +67,29 @@ const READING_FAQ_ITEMS = [
   {
     question: '如果我不知道問題該怎麼問怎麼辦？',
     answer: '你可以先簡單描述目前的狀況，我會協助你整理成適合盧恩解讀的問題。好的問題會讓解讀更清楚，也更容易帶出能行動的方向。'
+  }
+];
+
+const COURSE_FAQ_ITEMS = [
+  {
+    question: '完全沒有神秘學基礎可以參加嗎？',
+    answer: '可以。這堂課會從北歐神話、盧恩起源與 24 枚符文基礎開始，不需要你先學過塔羅、占星或其他神秘學工具。'
+  },
+  {
+    question: '我沒有通靈能力，也能學會嗎？',
+    answer: '可以。這堂課的核心不是通靈，而是建立一套可以理解、練習與應用的符文解讀系統。你會學習如何從符文象徵、神話背景與問題結構進行判讀，而不是依賴模糊的靈感。'
+  },
+  {
+    question: '我已經會塔羅，還適合學嗎？',
+    answer: '適合。盧恩和塔羅是不同的系統。塔羅偏向圖像敘事，盧恩更像是力量、狀態與課題的符號語言。如果你已經有占卜基礎，盧恩可以幫助你建立另一種更簡潔、直接、有力量的解讀方式。'
+  },
+  {
+    question: '課程中會實際練習占卜嗎？',
+    answer: '會。課程會帶入盧恩占卜的基礎原理、問題設計與符文解讀練習，協助你把符文從知識轉化成可以使用的工具。'
+  },
+  {
+    question: '課程會提供完整課綱嗎？',
+    answer: '會。官網只放課程重點，避免內容過長。完整課綱、開課梯次、費用與報名方式，請加入官方 LINE 取得。'
   }
 ];
 
@@ -171,7 +194,7 @@ function homePage() {
     '<p>如果你想更深入理解感情、關係、選擇與生命轉化，可以選擇一對一占卜，也可以從課程建立自己的解讀系統。</p></div>',
     '<div class="service-grid">',
     serviceCard('我想被解讀', '適合正在面對感情困惑、關係不確定、人生選擇，想透過盧恩看見目前狀態與下一步的人。', '預約盧恩占卜', SERVICE_LINKS.booking, true, '先看占卜須知', '/rune-reading'),
-    serviceCard('我想自己學會', '適合想從零建立符文語感，學會自己理解 24 枚盧恩，並應用在自我探索與日常覺察的人。', '前往 1shop 報名', SERVICE_LINKS.course, false, '了解教學課程', '/courses'),
+    serviceCard('我想自己學會', '適合想從零建立符文語感，學會自己理解 24 枚盧恩，並應用在自我探索與日常覺察的人。', '了解盧恩教學課程', '/courses', true),
     '</div></div></section>'
   ].join('');
 }
@@ -543,19 +566,149 @@ function runeReadingPage() {
   ].join('');
 }
 
+function courseList(items, className = 'course-check-list') {
+  return '<ul class="' + className + '">' +
+    items.map(item => '<li>' + esc(item) + '</li>').join('') +
+    '</ul>';
+}
+
+function courseFeatureCard(title, paragraphs) {
+  return '<article class="content-card course-feature-card"><h3>' + esc(title) + '</h3>' +
+    paragraphs.map(paragraph => '<p>' + esc(paragraph) + '</p>').join('') +
+    '</article>';
+}
+
+function courseLesson(number, title, body) {
+  return '<article class="course-lesson"><span class="course-lesson-number">' + number + '</span>' +
+    '<div><span class="eyebrow">Lesson ' + number + '</span><h3>' + esc(title) + '</h3><p>' + esc(body) + '</p></div></article>';
+}
+
 function coursesPage() {
+  const painPoints = [
+    '知道每一枚符文有關鍵字，卻不知道怎麼組成完整解讀',
+    '看過很多資料，但不同說法太多，越看越混亂',
+    '想學占卜，卻覺得自己沒有通靈能力或靈感不夠',
+    '學過塔羅或其他神秘學工具，卻還沒有建立自己的解讀語言',
+    '想用盧恩做日常指引，卻不知道如何開始練習',
+    '想擁有一套屬於自己的占卜工具，而不只是購買現成符文'
+  ].map((item, index) =>
+    '<article class="course-pain-card"><span>0' + (index + 1) + '</span><p>' + esc(item) + '</p></article>'
+  ).join('');
+
+  const outcomes = [
+    '如何理解 24 枚盧恩的核心力量',
+    '如何把符文應用在感情、關係、選擇與人生課題中',
+    '如何分辨符文的明亮面與陰影面',
+    '如何從北歐神話理解符文背後的生命課題',
+    '如何設計問題，讓占卜結果更清楚',
+    '如何開始建立自己的占卜語言',
+    '如何創作屬於自己的第一套專屬符文'
+  ];
+
+  const audiences = [
+    '完全沒有盧恩基礎，但想從零開始學',
+    '對北歐神話、符文、占卜與神秘學有興趣',
+    '已經接觸塔羅、占星或其他工具，想擴充新的解讀系統',
+    '想學會一套不依賴通靈，也能清楚判讀的占卜方式',
+    '想把占卜應用在感情、關係、自我探索與人生選擇裡',
+    '想親手創作一套屬於自己的盧恩符文',
+    '想建立更有個人風格的神秘學工具'
+  ];
+
   return [
-    '<section class="page-hero"><div class="wrap"><span class="eyebrow">Learn with Ori</span><h1>盧恩教學課程</h1>',
-    '<p class="lead">從 24 枚符文的核心語言開始，逐步建立可以帶回生活、自我探索與關係理解中的解讀能力。</p></div></section>',
-    '<section class="section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">Learning Direction</span><h2>不是背答案，而是學會閱讀符文</h2></div>',
-    '<p>課程適合想從零開始，建立符文基礎、理解正向與陰影狀態，並練習把象徵連結到真實生活的人。</p></div><div class="start-card-grid aett-grid">',
-    startInfoCard('建立基礎', '認識 Elder Futhark 24 枚符文的名稱、符號、核心含義與三組 Aett 架構。'),
-    startInfoCard('練習解讀', '從關鍵字走向完整理解，學習辨認符文在不同問題與狀態中的表現。'),
-    startInfoCard('回到生活', '將符文應用於日常覺察、關係理解與自我探索，而不是只停留在記憶答案。'),
+    '<section class="course-hero"><div class="wrap course-hero-grid"><div class="course-hero-copy">',
+    '<span class="eyebrow">Rune Divination Course</span><p class="course-kicker">盧恩符文課程</p>',
+    '<h1>不靠通靈，<br>也能讀懂符文</h1>',
+    '<p class="lead">從查資料到真正解讀，讓 24 枚盧恩成為你能實際使用的占卜語言。</p>',
+    '<p>你可能已經知道 Fehu 是財富、Gebo 是禮物、Isa 是冰，卻仍不知道該如何把關鍵字放進真實問題。這堂課不要求你死背答案，而是從北歐神話、符文結構與占卜原理出發，協助你建立真正理解、也能實際使用的解讀系統。</p>',
+    '<p>你不需要天生敏感，也不需要先學會通靈。只要願意進入符文的語言，就能開始讀懂它背後的智慧。</p>',
+    '<div class="button-row">', button('加入官方 LINE 諮詢課程', COURSE_LINE_URL, true), '</div></div>',
+    '<div class="course-hero-mark" aria-hidden="true"><span>ᚨ</span><small>ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ ᚷ ᚹ</small></div></div></section>',
+
+    '<section class="section course-pain-section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">Where Learning Gets Stuck</span><h2>你是不是也卡在這裡？</h2></div>',
+    '<p>你可能已經對盧恩有興趣，卻一直停在「查資料」的階段。</p></div>',
+    '<div class="course-pain-grid">', painPoints, '</div>',
+    '<div class="course-section-note"><p>如果你想要的不是零散資料，而是一條可以真正走完的學習路徑，這堂課會帶你從零開始，進入盧恩的世界。</p></div></div></section>',
+
+    '<section class="section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">From Keywords to Reading</span><h2>從查資料，到真正解讀</h2></div>',
+    '<p>網路上可以查到很多符文關鍵字，但關鍵字不等於解讀能力。</p></div>',
+    '<div class="course-contrast-grid"><article class="content-card course-keyword-card"><span class="eyebrow">You Can Look Up</span><h3>查得到的關鍵字</h3>',
+    '<dl><div><dt>Fehu</dt><dd>財富</dd></div><div><dt>Uruz</dt><dd>力量</dd></div><div><dt>Gebo</dt><dd>禮物</dd></div><div><dt>Isa</dt><dd>冰</dd></div></dl></article>',
+    '<article class="content-card course-question-card"><span class="eyebrow">What Reading Requires</span><h3>真正需要解讀的問題</h3>',
+    '<blockquote>「這段關係目前卡在哪裡？」</blockquote><blockquote>「我該繼續等待，還是往前走？」</blockquote><blockquote>「我現在真正需要面對的課題是什麼？」</blockquote><blockquote>「這枚符文究竟想提醒我什麼？」</blockquote></article></div>',
+    '<div class="course-reading-summary"><p>這堂課會協助你把零散知識整理成系統，讓符文不再只是神秘符號，而是你能真正使用的占卜語言。</p>',
+    '<strong>你不只會知道每一枚符文的意思，也會學習如何讀出狀態、課題與行動方向。</strong></div></div></section>',
+
+    '<section class="section course-outcome-section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">What You Will Build</span><h2>這堂課會帶你完成什麼？</h2></div>',
+    '<p>目標不是背下 24 枚符文的標準答案，而是逐步建立能實際使用的能力。</p></div>',
+    '<div class="course-outcome-grid">', courseList(outcomes, 'course-check-list'), '</div>',
+    '<div class="quote-box course-transformation"><strong>從「我知道這枚符文的關鍵字」，走到「我能把符文轉化成一段有意義的解讀」。</strong><p>這才是盧恩真正能被使用的開始。</p></div></div></section>',
+
+    '<section class="section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">Who This Is For</span><h2>這堂課適合誰？</h2></div>',
+    '<p>無論你是完全新手，或已有其他神秘學基礎，都可以從這裡建立盧恩語言。</p></div>',
+    '<div class="course-audience-grid"><article class="content-card course-audience-card"><h3>這堂課適合你，如果你：</h3>', courseList(audiences), '</article>',
+    '<aside class="course-not-for-card"><span class="eyebrow">A Gentle Reminder</span><h3>這不是一份速成答案表</h3>',
+    '<p>這堂課不適合只想快速得到標準答案的人。因為我們要做的，不只是記住符文，而是學會閱讀符文。</p>',
+    '<p>你會需要願意觀察、練習，並慢慢建立自己的理解。</p></aside></div></div></section>',
+
+    '<section class="section course-feature-section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">Course Features</span><h2>課程特色</h2></div>',
+    '<p>從理解到實作，讓符文不只停留在筆記裡。</p></div><div class="course-feature-grid">',
+    courseFeatureCard('不需要通靈，也能建立解讀系統', [
+      '盧恩不是只有靈感很強的人才能學。它是一套可以被理解、練習與建立的象徵語言。',
+      '課程會從符文結構、神話脈絡與占卜原理開始，帶你一步步判讀，而不是只憑感覺猜答案。'
+    ]),
+    courseFeatureCard('從北歐神話理解符文', [
+      '奧丁、世界樹、九界、諸神、巨人與命運，都是理解符文的重要線索。',
+      '神話不是裝飾，它會讓你知道一枚符文為什麼代表這股力量，又如何在人生裡形成課題。'
+    ]),
+    courseFeatureCard('從 24 枚符文建立占卜語言', [
+      '課程會依照三組 Aett 建立學習架構，理解每枚符文在不同問題中的表現。',
+      '你會用明亮面與陰影面，閱讀同一股力量在平衡與失衡時的不同樣貌。'
+    ]),
+    courseFeatureCard('創作你的第一套專屬符文', [
+      '你不只會學會解讀，也會理解如何取得、製作與啟動自己的第一套符文。',
+      '那不只是一組占卜工具，而是你與符文建立關係的開始。'
+    ]),
     '</div></div></section>',
-    '<section class="section"><div class="wrap"><div class="cta"><span class="eyebrow">Course Information</span><h2>查看目前開放中的課程</h2>',
-    '<p class="lead">課程內容、費用與報名方式以 Ori 的 1shop 最新公告為準。</p>',
-    '<div class="button-row">', button('前往 1shop 查看課程', SERVICE_LINKS.course, true), button('先從新手入門開始', '/beginner'), '</div></div></div></section>'
+
+    '<section class="section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">Five-Part Journey</span><h2>五堂課程簡介</h2></div>',
+    '<p>官網只呈現學習主軸；完整課綱與每堂細節會在官方 LINE 提供。</p></div><div class="course-lessons">',
+    courseLesson('01', '神話與盧恩的序幕', '從北歐創世神話、世界樹與奧丁的獻祭開始，理解盧恩的起源與精神。'),
+    courseLesson('02', '豐盛氏族的款待', "認識 Freyr's Aett，學習與資源、生命力、創造、關係與喜悅相關的符文。"),
+    courseLesson('03', '永恆守護的變革', "認識 Heimdall's Aett，理解考驗、命運、守護、轉化與光明。"),
+    courseLesson('04', '信念激盪的黃昏', "認識 Tyr's Aett，學習正義、信念、意志、人性、流動與傳承。"),
+    courseLesson('05', '再創世的開端', '整合占卜原理、符文陣式與綁定盧恩概念，開始建立自己的占卜系統。'),
+    '</div><div class="course-inline-cta"><p>完整課綱、每堂細節與開課梯次，歡迎加入官方 LINE 詢問。</p>',
+    button('加入官方 LINE 取得完整課綱', COURSE_LINE_URL, true), '</div></div></section>',
+
+    '<section class="section course-consult-section"><div class="wrap course-consult-grid"><div><span class="eyebrow">Talk with Ori</span><h2>想知道這堂課適不適合你？</h2>',
+    '<p>每個人接觸盧恩的原因都不同。你可以先加入官方 LINE，簡單告訴我你的學習狀態，我會協助你判斷這堂課是否符合需求。</p>',
+    '<div class="button-row">', button('加入官方 LINE，確認這堂課是否適合你', COURSE_LINE_URL, true), '</div></div>',
+    '<article class="content-card course-consult-card"><h3>你可以先和我聊聊：</h3>', courseList([
+      '目前是否有神秘學基礎',
+      '為什麼想學盧恩',
+      '想把盧恩應用在哪裡',
+      '比較想學占卜、神話，還是製作專屬符文'
+    ]), '<p class="muted">完整課綱、開課梯次、費用與報名方式，也會在 LINE 中提供。</p></article></div></section>',
+
+    '<section class="section faq-section course-faq-section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">Course FAQ</span><h2>常見問題</h2></div>',
+    '<p>先回答幾個開始學習前最常遇到的疑問。</p></div><div class="faq-list">', accordion(COURSE_FAQ_ITEMS, 'course-faq', false), '</div></div></section>',
+
+    '<section class="section"><div class="wrap course-language-grid"><div><span class="eyebrow">Build Your Language</span><h2>從 24 枚盧恩開始，建立你的占卜語言</h2>',
+    '<p>如果你只是想知道「每一枚符文的意思」，網路上已經有很多資料可以查。</p>',
+    '<p>但如果你想學會的是把符文放進真實問題、看懂狀態與課題，並建立一套能長期使用的解讀語言，那麼這堂課會是一個適合開始的入口。</p>',
+    '<div class="button-row">', button('私訊 Ori，聊聊你的學習狀態', COURSE_LINE_URL, true), '</div></div>',
+    '<article class="course-language-card"><span class="giant-rune">ᚨ</span><p>你不需要通靈，也可以讀懂符文。你不需要一開始就很有天賦，也可以透過系統學習建立能力。</p></article></div></section>',
+
+    '<section class="section course-journey-section"><div class="wrap course-journey"><span class="eyebrow">Begin the Journey</span><h2>開始你的盧恩之旅</h2>',
+    '<p class="lead">現在，我將以盧恩為經，神話為緯，<br>為你編織一段冰火交織的創世史詩。</p>',
+    '<p>你將從 24 枚符文出發，認識眾神、世界樹、命運與再創世的智慧，並在課程中建立自己的占卜系統，刻下屬於你的第一套專屬符文。</p>',
+    '<p class="course-journey-call">而你——探尋奧秘的騎樹者，<br>便隨我一同踏上旅程。</p>',
+    '<div class="button-row">', button('取得完整課綱與開課梯次', COURSE_LINE_URL, true), '</div></div></section>',
+
+    '<section class="section"><div class="wrap"><div class="cta course-final-cta"><span class="eyebrow">Your Next Step</span><h2>準備好讓符文成為你的語言了嗎？</h2>',
+    '<p class="lead">先加入官方 LINE，告訴 Ori 你目前的學習狀態。完整課綱、梯次、費用與報名方式，都會在諮詢中提供。</p>',
+    '<div class="button-row">', button('加入官方 LINE 諮詢課程', COURSE_LINE_URL, true), '</div></div></div></section>'
   ].join('');
 }
 
@@ -644,8 +797,10 @@ function render() {
   else if (path === '/courses') {
     app.innerHTML = coursesPage();
     setMeta({
-      title: '盧恩符文教學課程｜從 24 枚符文建立解讀系統｜世界樹觀測者 Ori',
-      description: '盧恩符文教學課程，從 Elder Futhark 24 枚符文出發，建立清楚、可理解、可應用的符文解讀系統，適合初學者與想深入學習占卜的人。',
+      title: '盧恩符文課程｜不靠通靈，也能建立你的符文占卜系統｜世界樹觀測者 Ori',
+      description: '從 24 枚 Elder Futhark 盧恩符文出發，透過北歐神話、符文結構與占卜原理，建立不依賴通靈也能實際使用的盧恩解讀系統。加入官方 LINE 取得完整課綱與開課梯次。',
+      ogTitle: '盧恩符文課程｜不靠通靈，也能建立你的符文占卜系統',
+      ogDescription: '從查資料到真正解讀，學會用 24 枚盧恩符文建立自己的占卜語言。加入官方 LINE 取得完整課綱與開課梯次。',
       canonicalPath: '/courses'
     });
   }
