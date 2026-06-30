@@ -5,7 +5,9 @@ const menuButton = document.querySelector('.menu-button');
 const SERVICE_LINKS = {
   booking: 'https://lin.ee/yxkj3pE'
 };
-const COURSE_LINE_URL = 'https://lin.ee/yxkj3pE';
+const HOME_READING_LINE_URL = 'https://lin.ee/yxkj3pE?utm_source=website&utm_medium=cta&utm_campaign=home_reading';
+const COURSE_LINE_URL = 'https://lin.ee/yxkj3pE?utm_source=website&utm_medium=cta&utm_campaign=course';
+const DAILY_RUNE_LINE_URL = 'https://lin.ee/yxkj3pE?utm_source=website&utm_medium=cta&utm_campaign=daily_rune';
 const SITE_ORIGIN = 'https://ori-rune-learning.vercel.app';
 
 const FAQ_ITEMS = [
@@ -172,7 +174,11 @@ function homePage() {
     '<h1>盧恩符文初學者，<br>從這裡開始學</h1>',
     '<p class="lead">這是一座為初學者設計的盧恩符文學習網站。你可以認識 Elder Futhark 24 枚符文、理解每一枚符文的核心含義，並用每日一符文練習自我覺察。</p>',
     '<div class="hero-points"><span>24 枚符文總覽</span><span>單一符文詳解</span><span>每日抽符文練習</span></div>',
-    '<div class="button-row">', button('新手從這裡開始', '/beginner', true), button('抽取今日符文', '/daily'), '</div>',
+    '<div class="hero-path-grid">',
+    '<article class="hero-path-card"><span class="hero-path-number">01</span><h2>我第一次認識盧恩</h2><p>從基本概念、24 枚符文與每日練習開始</p>', button('新手從這裡開始', '/beginner', true), '</article>',
+    '<article class="hero-path-card featured"><span class="hero-path-number">02</span><h2>我正在感情／關係裡卡住</h2><p>用盧恩整理關係狀態、焦慮、等待與選擇</p>', button('預約盧恩占卜', HOME_READING_LINE_URL, true), '</article>',
+    '<article class="hero-path-card"><span class="hero-path-number">03</span><h2>我想學會自己解讀符文</h2><p>從 24 枚盧恩建立自己的占卜語言</p>', button('了解盧恩教學課程', '/courses'), '</article>',
+    '</div>',
     '</div></div></section>',
     '<section class="section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">About Runes</span><h2>盧恩，是照見當下的鏡子</h2></div>',
     '<p>盧恩不只是古老的文字，也是一套理解世界與自我的象徵系統。每一枚符文都像一道門，帶你看見處境、力量，以及生命正在要求你學會的課題。</p></div>',
@@ -189,11 +195,11 @@ function homePage() {
     '<span class="eyebrow">About Ori</span><h2>讓神秘訊息，成為能行動的指引</h2>',
     '<p>Ori 是盧恩符文占卜師與教學者，以 24 枚 Elder Futhark 盧恩符文作為象徵系統，協助人們理解感情、關係、選擇與生命中的轉化時刻。</p>',
     '<p>他的解讀不依賴通靈，也不提供恐嚇式預言，而是透過符文看見問題結構，將神秘訊息轉化成清楚、可理解、能行動的指引。</p>',
-    '<div class="button-row">', button('了解 Ori 的占卜方法', '/about', true), button('預約盧恩占卜', SERVICE_LINKS.booking), button('抽取今日符文', '/daily'), '</div></div></div></section>',
+    '<div class="button-row">', button('了解 Ori 的占卜方法', '/about', true), button('預約盧恩占卜', HOME_READING_LINE_URL), button('抽取今日符文', '/daily'), '</div></div></div></section>',
     '<section class="section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">A Reading with Ori</span><h2>你想被解讀，還是想自己學會？</h2></div>',
     '<p>如果你想更深入理解感情、關係、選擇與生命轉化，可以選擇一對一占卜，也可以從課程建立自己的解讀系統。</p></div>',
     '<div class="service-grid">',
-    serviceCard('我想被解讀', '適合正在面對感情困惑、關係不確定、人生選擇，想透過盧恩看見目前狀態與下一步的人。', '預約盧恩占卜', SERVICE_LINKS.booking, true, '先看占卜須知', '/rune-reading'),
+    serviceCard('我想被解讀', '適合正在面對感情困惑、關係不確定、人生選擇，想透過盧恩看見目前狀態與下一步的人。', '預約盧恩占卜', HOME_READING_LINE_URL, true, '先看占卜須知', '/rune-reading'),
     serviceCard('我想自己學會', '適合想從零建立符文語感，學會自己理解 24 枚盧恩，並應用在自我探索與日常覺察的人。', '了解盧恩教學課程', '/courses', true),
     '</div></div></section>'
   ].join('');
@@ -432,6 +438,9 @@ function drawRune() {
     '<li>如果照目前的模式走下去，可能形成什麼結果？</li>',
     '<li>今天我可以在哪裡多一點清醒與選擇？</li>',
     '</ul></div>',
+    '<div class="daily-reading-cta"><span class="eyebrow">Go Deeper</span>',
+    '<p>如果這枚符文剛好對應你最近的關係狀態，或讓你想到某個反覆困擾你的問題，也可以透過盧恩占卜，把訊息整理得更清楚。</p>',
+    button('我想用這枚符文深入占卜', DAILY_RUNE_LINE_URL, true), '</div>',
     '<div class="button-row" style="justify-content:center"><button class="btn primary" id="draw-rune">再抽一枚</button>',
     '<a class="btn" href="/runes/', rune.slug, '">深入認識這枚符文</a></div>'
   ].join('');
@@ -622,13 +631,27 @@ function coursesPage() {
     '<p class="lead">從查資料到真正解讀，讓 24 枚盧恩成為你能實際使用的占卜語言。</p>',
     '<p>你可能已經知道 Fehu 是財富、Gebo 是禮物、Isa 是冰，卻仍不知道該如何把關鍵字放進真實問題。這堂課不要求你死背答案，而是從北歐神話、符文結構與占卜原理出發，協助你建立真正理解、也能實際使用的解讀系統。</p>',
     '<p>你不需要天生敏感，也不需要先學會通靈。只要願意進入符文的語言，就能開始讀懂它背後的智慧。</p>',
-    '<div class="button-row">', button('加入官方 LINE 諮詢課程', COURSE_LINE_URL, true), '</div></div>',
+    '<div class="button-row">', button('取得完整課綱', COURSE_LINE_URL, true), '</div></div>',
     '<div class="course-hero-mark" aria-hidden="true"><span>ᚨ</span><small>ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ ᚷ ᚹ</small></div></div></section>',
+
+    '<section class="section compact-section course-quick-section"><div class="wrap">',
+    '<div class="section-head"><div><span class="eyebrow">Course Overview</span><h2>課程資訊速覽</h2></div>',
+    '<p>先用一分鐘確認課程形式、學習方向與你會帶走的成果。</p></div>',
+    '<div class="course-quick-grid">',
+    '<article class="course-quick-card"><span>課程名稱</span><strong>盧恩符文一階課程</strong></article>',
+    '<article class="course-quick-card"><span>課程堂數</span><strong>5 堂</strong></article>',
+    '<article class="course-quick-card"><span>課程時間</span><strong>共 15 小時</strong></article>',
+    '<article class="course-quick-card"><span>課程形式</span><strong>線上／實體，依當期公告</strong></article>',
+    '<article class="course-quick-card"><span>適合對象</span><strong>零基礎、神秘學初學者、想建立占卜系統者</strong></article>',
+    '<article class="course-quick-card"><span>課程成果</span><strong>理解 24 枚符文、建立解讀邏輯、完成第一套專屬符文</strong></article>',
+    '<article class="course-quick-card wide"><span>報名方式</span><strong>加入官方 LINE 詢問梯次與完整課綱</strong></article>',
+    '</div></div></section>',
 
     '<section class="section course-pain-section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">Where Learning Gets Stuck</span><h2>你是不是也卡在這裡？</h2></div>',
     '<p>你可能已經對盧恩有興趣，卻一直停在「查資料」的階段。</p></div>',
     '<div class="course-pain-grid">', painPoints, '</div>',
-    '<div class="course-section-note"><p>如果你想要的不是零散資料，而是一條可以真正走完的學習路徑，這堂課會帶你從零開始，進入盧恩的世界。</p></div></div></section>',
+    '<div class="course-section-note"><p>如果你想要的不是零散資料，而是一條可以真正走完的學習路徑，這堂課會帶你從零開始，進入盧恩的世界。</p></div>',
+    '<div class="course-pain-cta">', button('我想知道這堂課適不適合我', COURSE_LINE_URL, true), '</div></div></section>',
 
     '<section class="section"><div class="wrap"><div class="section-head"><div><span class="eyebrow">From Keywords to Reading</span><h2>從查資料，到真正解讀</h2></div>',
     '<p>網路上可以查到很多符文關鍵字，但關鍵字不等於解讀能力。</p></div>',
@@ -679,7 +702,7 @@ function coursesPage() {
     courseLesson('04', '信念激盪的黃昏', "認識 Tyr's Aett，學習正義、信念、意志、人性、流動與傳承。"),
     courseLesson('05', '再創世的開端', '整合占卜原理、符文陣式與綁定盧恩概念，開始建立自己的占卜系統。'),
     '</div><div class="course-inline-cta"><p>完整課綱、每堂細節與開課梯次，歡迎加入官方 LINE 詢問。</p>',
-    button('加入官方 LINE 取得完整課綱', COURSE_LINE_URL, true), '</div></div></section>',
+    button('查看開課梯次', COURSE_LINE_URL, true), '</div></div></section>',
 
     '<section class="section course-consult-section"><div class="wrap course-consult-grid"><div><span class="eyebrow">Talk with Ori</span><h2>想知道這堂課適不適合你？</h2>',
     '<p>每個人接觸盧恩的原因都不同。你可以先加入官方 LINE，簡單告訴我你的學習狀態，我會協助你判斷這堂課是否符合需求。</p>',
@@ -708,7 +731,7 @@ function coursesPage() {
 
     '<section class="section"><div class="wrap"><div class="cta course-final-cta"><span class="eyebrow">Your Next Step</span><h2>準備好讓符文成為你的語言了嗎？</h2>',
     '<p class="lead">先加入官方 LINE，告訴 Ori 你目前的學習狀態。完整課綱、梯次、費用與報名方式，都會在諮詢中提供。</p>',
-    '<div class="button-row">', button('加入官方 LINE 諮詢課程', COURSE_LINE_URL, true), '</div></div></div></section>'
+    '<div class="button-row">', button('加入 LINE 報名課程', COURSE_LINE_URL, true), '</div></div></div></section>'
   ].join('');
 }
 
