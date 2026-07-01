@@ -95,16 +95,16 @@ git push
 
 請直接開啟並重新整理：
 
-1. `https://ori-rune-learning.vercel.app/`
-2. `https://ori-rune-learning.vercel.app/beginner`
-3. `https://ori-rune-learning.vercel.app/runes`
-4. `https://ori-rune-learning.vercel.app/runes/fehu`
-5. `https://ori-rune-learning.vercel.app/daily`
-6. `https://ori-rune-learning.vercel.app/about`
-7. `https://ori-rune-learning.vercel.app/rune-reading`
-8. `https://ori-rune-learning.vercel.app/courses`
-9. `https://ori-rune-learning.vercel.app/sitemap.xml`
-10. `https://ori-rune-learning.vercel.app/robots.txt`
+1. `https://orirunes.com/`
+2. `https://orirunes.com/beginner`
+3. `https://orirunes.com/runes`
+4. `https://orirunes.com/runes/fehu`
+5. `https://orirunes.com/daily`
+6. `https://orirunes.com/about`
+7. `https://orirunes.com/rune-reading`
+8. `https://orirunes.com/courses`
+9. `https://orirunes.com/sitemap.xml`
+10. `https://orirunes.com/robots.txt`
 
 另請確認：
 

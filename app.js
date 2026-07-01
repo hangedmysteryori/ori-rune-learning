@@ -8,7 +8,7 @@ const SERVICE_LINKS = {
 const HOME_READING_LINE_URL = 'https://lin.ee/yxkj3pE?utm_source=website&utm_medium=cta&utm_campaign=home_reading';
 const COURSE_LINE_URL = 'https://lin.ee/yxkj3pE?utm_source=website&utm_medium=cta&utm_campaign=course';
 const DAILY_RUNE_LINE_URL = 'https://lin.ee/yxkj3pE?utm_source=website&utm_medium=cta&utm_campaign=daily_rune';
-const SITE_ORIGIN = 'https://ori-rune-learning.vercel.app';
+const SITE_ORIGIN = 'https://orirunes.com';
 
 const FAQ_ITEMS = [
   {
